@@ -29,6 +29,7 @@ stages:
   - stage: push_nuget_to_feed
     displayName: 'Push NuGet package to feed'
     dependsOn: [continuous_integration]
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     pool:
       name: 'AWS EC2 Pool'
     jobs:
