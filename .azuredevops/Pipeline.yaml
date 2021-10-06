@@ -6,7 +6,7 @@ stages:
       name: 'AWS EC2 Pool'
     jobs:
       - job: Build
-        displayName: 'Build'
+        displayName: 'Build and test'
         dependsOn: []
         steps:
           - task: DotNetCoreCLI@2
@@ -14,10 +14,6 @@ stages:
             inputs:
               projects: '**/*.csproj'
               arguments: '--configuration Release'
-      - job: Test
-        displayName: 'Test'
-        dependsOn: [ Build ]
-        steps:
           - task: DotNetCoreCLI@2
             displayName: Test
             inputs:
