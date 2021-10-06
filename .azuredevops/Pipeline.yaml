@@ -6,26 +6,20 @@ stages:
       name: 'AWS EC2 Pool'
     jobs:
       - job: Build
-        displayName: 'Build'
+        displayName: 'Build and test'
         dependsOn: []
         steps:
           - task: DotNetCoreCLI@2
-            displayName: Restore
-            inputs:
-              command: restore
-              projects: '$(Parameters.RestoreBuildProjects)'
-          - task: DotNetCoreCLI@2
             displayName: Build
             inputs:
-              projects: '$(Parameters.RestoreBuildProjects)'
-              arguments: '--configuration $(BuildConfiguration)'
-
+              projects: '**/*.csproj'
+              arguments: '--configuration Release'
           - task: DotNetCoreCLI@2
             displayName: Test
             inputs:
               command: test
-              projects: '$(Parameters.TestProjects)'
-              arguments: '--configuration $(BuildConfiguration)'
+              projects: '**/*[Tt]ests.csproj'
+              arguments: '--configuration Release'
   - stage: push_nuget_to_feed
     displayName: 'Push NuGet package to feed'
     dependsOn: [continuous_integration]
