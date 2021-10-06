@@ -1,0 +1,43 @@
+stages:
+  - stage: continuous_integration
+    displayName: 'Build and test'
+    dependsOn: []
+    pool:
+      name: 'AWS EC2 Pool'
+    jobs:
+      - job: Build
+        displayName: 'Build'
+        dependsOn: []
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Restore
+            inputs:
+              command: restore
+              projects: '$(Parameters.RestoreBuildProjects)'
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              projects: '$(Parameters.RestoreBuildProjects)'
+              arguments: '--configuration $(BuildConfiguration)'
+
+          - task: DotNetCoreCLI@2
+            displayName: Test
+            inputs:
+              command: test
+              projects: '$(Parameters.TestProjects)'
+              arguments: '--configuration $(BuildConfiguration)'
+  - stage: push_nuget_to_feed
+    displayName: 'Push NuGet package to feed'
+    dependsOn: [continuous_integration]
+    pool:
+      name: 'AWS EC2 Pool'
+    jobs:
+      - job: NuGetPush
+        displayName: 'Push NuGet'
+        dependsOn: []
+        steps:
+          - task: NuGetCommand@2
+            displayName: 'NuGet push'
+            inputs:
+              command: push
+              publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
