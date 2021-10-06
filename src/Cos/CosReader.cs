@@ -12,8 +12,8 @@ namespace Easee.Cos
     {
         public List<Observation> Deserialize(in byte[] cosData)
         {
-            using MemoryStream stream = new MemoryStream(cosData);
-            using BigEndianReader reader = new BigEndianReader(new BinaryReader(stream));
+            using MemoryStream stream = new(cosData);
+            using BigEndianReader reader = new(stream);
 
             // Deserialize cos argument into observations list.
             byte version = reader.ReadByte();
@@ -27,9 +27,9 @@ namespace Easee.Cos
             }
         }
 
-        private List<Observation> DeserializeCOSVersion1(BigEndianReader reader)
+        private static List<Observation> DeserializeCOSVersion1(BigEndianReader reader)
         {
-            List<Observation> _observations = new List<Observation>();
+            List<Observation> _observations = new();
 
             byte flags = reader.ReadByte();
             ushort sectionCount = reader.ReadUInt16();
@@ -95,14 +95,14 @@ namespace Easee.Cos
             return _observations;
         }
 
-        private Tuple<COSObservationType, ushort> DecodeObservationDescriptor(ushort descriptor)
+        private static Tuple<COSObservationType, ushort> DecodeObservationDescriptor(ushort descriptor)
         {
             COSObservationType type = (COSObservationType)(descriptor >> 12);
             ushort id = (ushort)(descriptor & 0xFFF);
             return new Tuple<COSObservationType, ushort>(type, id);
         }
 
-        private Observation DecodeObservationValue(BigEndianReader reader, int observationId, COSObservationType observationType, DateTime timestamp)
+        private static Observation DecodeObservationValue(BigEndianReader reader, int observationId, COSObservationType observationType, DateTime timestamp)
         {
             switch (observationType)
             {
