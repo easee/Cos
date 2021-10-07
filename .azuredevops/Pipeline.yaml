@@ -23,11 +23,11 @@ stages:
   - stage: push_nuget_to_feed
     displayName: 'Push NuGet package to feed'
     dependsOn: [continuous_integration]
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
     pool:
       name: 'AWS EC2 Pool'
     jobs:
-      - job: NuGetPush
+      - job: NuGetPackAndPush
         displayName: 'Create and Push NuGet'
         dependsOn: []
         steps:
