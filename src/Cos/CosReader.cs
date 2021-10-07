@@ -15,15 +15,14 @@ namespace Easee.Cos
             using MemoryStream stream = new(cosData);
             using BigEndianBinaryReader reader = new(stream);
 
-            // Deserialize cos argument into observations list.
-            byte version = reader.ReadByte();
-            if (version == 1)
+            byte cosVersion = reader.ReadByte();
+            if (cosVersion == 1)
             {
                 return DeserializeCOSVersion1(reader);
             }
             else
             {
-                throw new Exception($"Unsupported COS version: {version}");
+                throw new Exception($"Unsupported COS version: {cosVersion}");
             }
         }
 
