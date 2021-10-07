@@ -29,3 +29,5 @@ Use [this guide](https://www.jetbrains.com/help/rider/Using_NuGet.html#sources)
 
 ## Release/deploy
 All builds on *main* branch is built, tested and released as a NuGet package. NuGet requires semantic versioning and that new version numbers are greater that the previous ones. Bump the *Version* property in *Cos.csproj* before merging to *main*.
+
+Before releasing a new version, run the benchmark project in the *Tests* folder with and without the changes to see the impact on performance. Run the application from the command line, build in *Release*. This will print the benchmark results.
