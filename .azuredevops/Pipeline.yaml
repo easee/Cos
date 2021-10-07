@@ -20,14 +20,6 @@ stages:
               command: test
               projects: '**/*[Tt]ests.csproj'
               arguments: '--configuration Release'
-          - task: CopyFiles@2
-            displayName: 'Copy NuGet package'
-            inputs:
-              contents: '**/*.nupkg'
-              targetFolder: '$(Build.ArtifactStagingDirectory)'
-          - publish: '$(Build.ArtifactStagingDirectory)'
-            displayName: 'Publish NuGet package for later use'
-            artifact: NuGet
   - stage: push_nuget_to_feed
     displayName: 'Push NuGet package to feed'
     dependsOn: [continuous_integration]
