@@ -8,6 +8,6 @@ For more information about the COS format, visit this repo: https://github.com/M
 ## Example
 ```
 byte[] data = <MyCosData>;
-CosReader reader = new();
+ICosReader reader = new CosReader();
 ListObservation> observations = reader.Deserialize(data);
 ```
