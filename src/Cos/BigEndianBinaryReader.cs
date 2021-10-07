@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Easee.Cos
 {
-    public class BigEndianReader : BinaryReader
+    public class BigEndianBinaryReader : BinaryReader
     {
-        public BigEndianReader(Stream stream)
+        public BigEndianBinaryReader(Stream stream)
             : base(stream)
         {
         }

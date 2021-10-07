@@ -16,7 +16,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             short result = reader.ReadInt16();
 
@@ -32,7 +32,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             ushort result = reader.ReadUInt16();
 
@@ -48,7 +48,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             int result = reader.ReadInt32();
 
@@ -64,7 +64,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             uint result = reader.ReadUInt32();
 
@@ -80,7 +80,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             long result = reader.ReadInt64();
 
@@ -96,7 +96,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             ulong result = reader.ReadUInt64();
 
@@ -112,7 +112,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             float data = reader.ReadSingle();
 
@@ -128,7 +128,7 @@ namespace Cos.Tests
                 Array.Reverse(cosData);
             }
             using MemoryStream stream = new(cosData);
-            using BigEndianReader reader = new(stream);
+            using BigEndianBinaryReader reader = new(stream);
 
             double data = reader.ReadDouble();
 
