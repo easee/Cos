@@ -20,6 +20,14 @@ stages:
               command: test
               projects: '**/*[Tt]ests.csproj'
               arguments: '--configuration Release'
+          - task: CopyFiles@2
+            displayName: 'Copy NuGet package'
+            inputs:
+              contents: '**/*.nupkg'
+              targetFolder: '$(Build.ArtifactStagingDirectory)'
+          - publish: '$(Build.ArtifactStagingDirectory)'
+            displayName: 'Publish NuGet package for later use'
+            artifact: NuGet
   - stage: push_nuget_to_feed
     displayName: 'Push NuGet package to feed'
     dependsOn: [continuous_integration]
@@ -27,15 +35,10 @@ stages:
     pool:
       name: 'AWS EC2 Pool'
     jobs:
-      - job: NuGetPackAndPush
+      - job: NuGetPush
         displayName: 'Create and Push NuGet'
         dependsOn: []
         steps:
-          - task: NuGetCommand@2
-            inputs:
-              command: pack
-              packagesToPack: '**/Cos.csproj'
-              packDestination: '$(Build.ArtifactStagingDirectory)'
           - task: NuGetCommand@2
             displayName: 'NuGet push'
             inputs:
