@@ -10,7 +10,7 @@ stages:
           - task: AWSShellScript@1
             displayName: Build and Test
             inputs:
-              arguments: 'Compile'
+              arguments: 'Test'
               filePath: './build.cmd'
               scriptType: 'filePath'
           - publish: 'artifacts'
