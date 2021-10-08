@@ -83,11 +83,7 @@ class Build : NukeBuild
 
     Target PublishNuGetPackage => _ => _
         .DependsOn(CreateNuGetPackage)
-        .Produces(PublishedArtifactsDirectory / "*.*")
-        .Executes(() =>
-        {
-            CopyFileToDirectory(ArtifactsDirectory / "*.nupkg", PublishedArtifactsDirectory);
-        });
+        .Produces(ArtifactsDirectory / "*.*");
 
     Target PushNuGetPackage => _ => _
         .Executes(() =>
