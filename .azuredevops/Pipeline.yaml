@@ -4,6 +4,8 @@ stages:
     dependsOn: []
     pool:
       name: 'Azure Pipelines'
+    variables:
+      buildConfiguration: 'Release'
     jobs:
       - job: Build
         displayName: 'Build and test'
@@ -13,33 +15,37 @@ stages:
             displayName: Build
             inputs:
               projects: '**/*.csproj'
-              arguments: '--configuration Release'
+              arguments: '--configuration $(buildConfiguration)'
           - task: DotNetCoreCLI@2
             displayName: Test
             inputs:
               command: test
               projects: '**/*[Tt]ests.csproj'
-              arguments: '--configuration Release'
-          - publish: $(System.DefaultWorkingDirectory)/src/Cos/bin/Release/*.nupkg'
-            displayName: 'Publish NuGet package for later use'
-            artifact: CosNuGet
-  - stage: push_nuget_to_feed
-    displayName: 'Push NuGet package to feed'
-    dependsOn: [continuous_integration]
+              arguments: '--configuration $(buildConfiguration)'
+          - task: DotNetCoreCLI@2
+            displayName: 'Create NuGet Package'
+            inputs:
+              command: pack
+              packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+              arguments: '--configuration $(buildConfiguration)'
+              nobuild: true
+          - publish: '$(Build.ArtifactStagingDirectory)/packages'
+            artifact: 'packages'
+  - stage: 'PublishNuGetPackage'
+    displayName: 'Publish NuGet Package'
+    dependsOn: 'Build'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
-    pool:
-      name: 'Azure Pipelines'
     jobs:
-      - job: NuGetPush
-        displayName: 'Create and Push NuGet'
-        dependsOn: []
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: CosNuGet
-          - task: NuGetCommand@2
-            displayName: 'NuGet push'
-            inputs:
-              command: push
-              publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
-              packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg'
+    - job:
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+      - checkout: none
+      - download: current
+        artifact: 'packages'
+      - task: NuGetCommand@2
+        displayName: 'Push NuGet Package'
+        inputs:
+          command: 'push'
+          packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg'
+          publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
