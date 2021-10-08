@@ -39,6 +39,8 @@ stages:
         displayName: 'Create and Push NuGet'
         dependsOn: []
         steps:
+          - download: current
+            artifact: NuGet
           - task: NuGetCommand@2
             displayName: 'NuGet push'
             inputs:
