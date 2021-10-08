@@ -10,7 +10,7 @@ stages:
           - task: AWSShellScript@1
             displayName: Build and Test
             inputs:
-              arguments: 'Test'
+              arguments: 'CreateNuGetPackage'
               filePath: './build.cmd'
               scriptType: 'filePath'
   - stage: 'PublishNuGetPackage'
