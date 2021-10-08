@@ -23,7 +23,7 @@ stages:
           - task: CopyFiles@2
             displayName: 'Copy NuGet package'
             inputs:
-              contents: '**/*.nupkg'
+              contents: 'src/Cos/bin/Release/*.nupkg'
               targetFolder: '$(Build.ArtifactStagingDirectory)'
           - publish: '$(Build.ArtifactStagingDirectory)'
             displayName: 'Publish NuGet package for later use'
