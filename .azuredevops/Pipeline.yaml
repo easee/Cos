@@ -11,7 +11,8 @@ stages:
             displayName: Build and Test
             inputs:
               arguments: 'Test'
-              filePath: '.\build.cmd'
+              filePath: './build.cmd'
+              scriptType: 'filePath'
           - publish: 'artifacts'
             artifact: 'package'
   - stage: 'PublishNuGetPackage'
@@ -28,4 +29,5 @@ stages:
         displayName: 'Push NuGet Package'
         inputs:
           arguments: 'PublishNuGetPackage'
-          filePath: '.\build.cmd'
+          filePath: './build.cmd'
+          scriptType: 'filePath'
