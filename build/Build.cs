@@ -30,6 +30,7 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
+    AbsolutePath PublishedArtifactsDirectory => null;
     public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway%40Local/nuget/v3/index.json";
 
     Target Clean => _ => _
@@ -81,10 +82,18 @@ class Build : NukeBuild
         });
 
     Target PublishNuGetPackage => _ => _
+        .DependsOn(CreateNuGetPackage)
+        .Produces(PublishedArtifactsDirectory / "*.*")
+        .Executes(() =>
+        {
+            CopyFileToDirectory(ArtifactsDirectory / "*.nupkg", PublishedArtifactsDirectory);
+        });
+
+    Target PushNuGetPackage => _ => _
         .Executes(() =>
         {
             DotNetNuGetPush(s => s
                 .SetSource(NuGetFeedUrl)
-                .SetTargetPath(ArtifactsDirectory));
+                .SetTargetPath(PublishedArtifactsDirectory));
         });
 }

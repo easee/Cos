@@ -8,9 +8,9 @@ stages:
         displayName: 'Build and test'
         steps:
           - task: AWSShellScript@1
-            displayName: Build and Test
+            displayName: 'Build, test and pack'
             inputs:
-              arguments: 'CreateNuGetPackage'
+              arguments: 'PublishNuGetPackage'
               filePath: './build.cmd'
               scriptType: 'filePath'
   - stage: 'PublishNuGetPackage'
@@ -26,6 +26,6 @@ stages:
       - task: AWSShellScript@1
         displayName: 'Push NuGet Package'
         inputs:
-          arguments: 'PublishNuGetPackage'
+          arguments: 'PushNuGetPackage'
           filePath: './build.cmd'
           scriptType: 'filePath'
