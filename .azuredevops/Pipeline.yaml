@@ -10,7 +10,7 @@ stages:
           - task: DotNetCoreCLI@2
             displayName: Build and Test
             inputs:
-              arguments: 'Test'
+              arguments: 'Compile'
               filePath: './build.cmd'
               scriptType: 'filePath'
           - publish: 'artifacts'
