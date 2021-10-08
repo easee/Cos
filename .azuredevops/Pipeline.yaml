@@ -34,7 +34,7 @@ stages:
         displayName: 'Create and Push NuGet'
         dependsOn: []
         steps:
-          - download: current
+          - task: DownloadPipelineArtifact@2
             inputs:
               artifact: CosNuGet
           - task: NuGetCommand@2
