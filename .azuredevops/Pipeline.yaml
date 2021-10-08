@@ -38,7 +38,7 @@ stages:
     jobs:
     - job:
       pool:
-        vmImage: 'ubuntu-latest'
+        vmImage: 'Azure Pipelines'
       steps:
       - checkout: none
       - download: current
