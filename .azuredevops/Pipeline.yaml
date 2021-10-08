@@ -20,7 +20,7 @@ stages:
               command: test
               projects: '**/*[Tt]ests.csproj'
               arguments: '--configuration Release'
-          - publish: $(System.DefaultWorkingDirectory)/**/*.nupkg'
+          - publish: $(System.DefaultWorkingDirectory)/src/Cos/bin/Release/*.nupkg'
             displayName: 'Publish NuGet package for later use'
             artifact: CosNuGet
   - stage: push_nuget_to_feed
