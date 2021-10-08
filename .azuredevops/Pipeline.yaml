@@ -1,21 +1,17 @@
 stages:
   - stage: continuous_integration
     displayName: 'Build and test'
-    dependsOn: []
     pool:
       name: 'AWS EC2 Pool'
-    variables:
-      buildConfiguration: 'Release'
     jobs:
       - job: Build
         displayName: 'Build and test'
-        dependsOn: []
         steps:
           - task: DotNetCoreCLI@2
             displayName: Build and Test
             inputs:
               arguments: 'Test'
-              filePath: './build.cmd'
+              filePath: '.\build.cmd'
           - publish: 'artifacts'
             artifact: 'package'
   - stage: 'PublishNuGetPackage'
@@ -32,4 +28,4 @@ stages:
         displayName: 'Push NuGet Package'
         inputs:
           arguments: 'PublishNuGetPackage'
-          filePath: './build.cmd'
+          filePath: '.\build.cmd'
