@@ -12,42 +12,24 @@ stages:
         dependsOn: []
         steps:
           - task: DotNetCoreCLI@2
-            displayName: Build
+            displayName: Build and Test
             inputs:
-              command: build
-              projects: '**/*.csproj'
-              arguments: '--configuration $(buildConfiguration)'
-          - task: DotNetCoreCLI@2
-            displayName: Test
-            inputs:
-              command: test
-              projects: '**/*[Tt]ests.csproj'
-              arguments: '--configuration $(buildConfiguration)'
-          - task: DotNetCoreCLI@2
-            displayName: 'Create NuGet Package'
-            inputs:
-              command: pack
-              projects: 'src/Cos/Cos.csproj'
-              packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
-              arguments: '--configuration $(buildConfiguration)'
-              nobuild: true
-          - publish: '$(Build.ArtifactStagingDirectory)/packages'
-            artifact: 'packages'
+              arguments: 'Test'
+              filePath: './build.cmd'
+          - publish: 'artifacts'
+            artifact: 'package'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
     pool: 'Azure Pipelines'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
     jobs:
     - job:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
-      - download: current
-        artifact: 'packages'
       - task: NuGetCommand@2
         displayName: 'Push NuGet Package'
         inputs:
-          command: 'push'
-          packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg'
-          publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
+          arguments: 'PublishNuGetPackage'
+          filePath: './build.cmd'
