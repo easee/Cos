@@ -3,7 +3,7 @@ stages:
     displayName: 'Build and test'
     dependsOn: []
     pool:
-      name: 'Azure Pipelines'
+      name: 'AWS EC2 Pool'
     variables:
       buildConfiguration: 'Release'
     jobs:
@@ -21,7 +21,7 @@ stages:
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
-    pool: 'Azure Pipelines'
+    pool: 'AWS EC2 Pool'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
     jobs:
     - job:
