@@ -46,4 +46,4 @@ stages:
             inputs:
               command: push
               publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
-              packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+              packagesToPush: '$(Agent.BuildDirectory)/**/*.nupkg'
