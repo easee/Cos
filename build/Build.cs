@@ -29,6 +29,7 @@ class Build : NukeBuild
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
     public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway%40Local/nuget/v3/index.json";
 
     Target Clean => _ => _
@@ -73,7 +74,7 @@ class Build : NukeBuild
         {
             DotNetPack(s => s
                 .SetConfiguration(Configuration)
-                .SetProject($"{SourceDirectory}/Cos/Cos.csproj")
+                .SetProject(NuGetProjectPath)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .EnableNoRestore()
                 .EnableNoBuild());
