@@ -13,8 +13,6 @@ stages:
               arguments: 'Test'
               filePath: './build.cmd'
               scriptType: 'filePath'
-          - publish: 'artifacts'
-            artifact: 'package'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
