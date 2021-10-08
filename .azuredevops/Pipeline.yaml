@@ -27,18 +27,18 @@ stages:
             inputs:
               command: pack
               packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
-              arguments: '--configuration $(buildConfiguration)'
+              arguments: 'src/Cos/Cos.csproj --configuration $(buildConfiguration)'
               nobuild: true
           - publish: '$(Build.ArtifactStagingDirectory)/packages'
             artifact: 'packages'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
+    pool: 'Azure Pipelines'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
     jobs:
     - job:
-      pool:
-        vmImage: 'Azure Pipelines'
+      displayName: 'Push NuGet package'
       steps:
       - checkout: none
       - download: current
