@@ -3,7 +3,7 @@ stages:
     displayName: 'Build and test'
     dependsOn: []
     pool:
-      name: 'AWS EC2 Pool'
+      name: 'Azure Pipelines'
     jobs:
       - job: Build
         displayName: 'Build and test'
@@ -33,7 +33,7 @@ stages:
     dependsOn: [continuous_integration]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
     pool:
-      name: 'AWS EC2 Pool'
+      name: 'Azure Pipelines'
     jobs:
       - job: NuGetPush
         displayName: 'Create and Push NuGet'
