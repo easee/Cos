@@ -7,7 +7,7 @@ stages:
       - job: Build
         displayName: 'Build and test'
         steps:
-          - task: DotNetCoreCLI@2
+          - task: AWSShellScript@1
             displayName: Build and Test
             inputs:
               arguments: 'Compile'
@@ -25,7 +25,7 @@ stages:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
-      - task: NuGetCommand@2
+      - task: AWSShellScript@1
         displayName: 'Push NuGet Package'
         inputs:
           arguments: 'PublishNuGetPackage'
