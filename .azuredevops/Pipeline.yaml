@@ -13,6 +13,9 @@ stages:
               arguments: 'CreateNuGetPackage'
               filePath: './build.cmd'
               scriptType: 'filePath'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
