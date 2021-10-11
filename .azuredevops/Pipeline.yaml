@@ -25,13 +25,10 @@ stages:
     - job:
       displayName: 'Push NuGet package'
       steps:
-      - checkout: none
-      - task: NuGetAuthenticate@0
+      - task: NuGetCommand@2
+        displayName: 'Deploy to NuGet feed'
         inputs:
-          nuGetServiceConnections: 'https://pkgs.dev.azure.com/easee-norway'
-      - task: AWSShellScript@1
-        displayName: 'Push NuGet Package'
-        inputs:
-          arguments: 'PushNuGetPackage'
-          filePath: './build.cmd'
-          scriptType: 'filePath'
+          command: 'push'
+          packagesToPush: '$(Pipeline.Workspace)/artifacts/**/*.nupkg'
+          nuGetFeedType: 'internal'
+          publishVstsFeed: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
