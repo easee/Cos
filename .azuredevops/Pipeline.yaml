@@ -17,7 +17,7 @@ stages:
               targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
           - task: ShellScript@2
             displayName: 'Push NuGet Package'
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
             inputs:
               scriptPath: './build.sh'
               args: 'PushNuGetPackage'
