@@ -77,9 +77,7 @@ class Build : NukeBuild
             DotNetPack(s => s
                 .SetConfiguration(Configuration)
                 .SetProject(NuGetProjectPath)
-                .SetOutputDirectory(ArtifactsDirectory)
-                .EnableNoRestore()
-                .EnableNoBuild());
+                .SetOutputDirectory(ArtifactsDirectory));
         });
 
     Target PushNuGetPackage => _ => _
