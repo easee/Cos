@@ -31,7 +31,7 @@ stages:
         inputs:
           command: 'push'
           searchPatternPush: '$(System.DefaultWorkingDirectory)/artifacts/**/*.nupkg'
-          feedPublish: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
+          feedPublish: 'easee-norway'
       #- task: NuGetAuthenticate@0
       #  inputs:
       #    nuGetServiceConnections: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
