@@ -7,12 +7,11 @@ stages:
       - job: Build
         displayName: 'Build and test'
         steps:
-          - task: CmdLine@2
+          - task: ShellScript@2
             displayName: 'Build, test and pack'
             inputs:
-              arguments: 'CreateNuGetPackage'
-              filePath: './build.cmd'
-              scriptType: 'filePath'
+              args: 'CreateNuGetPackage'
+              scriptPath: './build.sh'
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
@@ -26,9 +25,8 @@ stages:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
-      - task: CmdLine@2
+      - task: ShellScript@2
         displayName: 'Push NuGet Package'
         inputs:
-          arguments: 'PushNuGetPackage'
-          filePath: './build.cmd'
-          scriptType: 'filePath'
+          args: 'PushNuGetPackage'
+          scriptPath: './build.sh'
