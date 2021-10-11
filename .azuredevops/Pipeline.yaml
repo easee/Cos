@@ -30,11 +30,10 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           artifact: Cos
-          patterns: '**/*.nupkg'
-          path: $(System.DefaultWorkingDirectory)/bin
+          path: $(System.DefaultWorkingDirectory)/publish
       # Push non test NuGet packages from a build to internal organization Feed
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
-          searchPatternPush: '$(System.DefaultWorkingDirectory)/bin/**/*.nupkg'
+          searchPatternPush: '$(System.DefaultWorkingDirectory)/publish/**/*.nupkg'
           feedPublish: 'easee-norway'
