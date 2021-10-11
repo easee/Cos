@@ -7,7 +7,7 @@ stages:
       - job: Build
         displayName: 'Build and test'
         steps:
-          - task: AWSShellScript@1
+          - task: CmdLine@2
             displayName: 'Build, test and pack'
             inputs:
               arguments: 'CreateNuGetPackage'
@@ -26,7 +26,7 @@ stages:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
-      - task: AWSShellScript@1
+      - task: CmdLine@2
         displayName: 'Push NuGet Package'
         inputs:
           arguments: 'PushNuGetPackage'
