@@ -79,13 +79,4 @@ class Build : NukeBuild
                 .SetProject(NuGetProjectPath)
                 .SetOutputDirectory(ArtifactsDirectory));
         });
-
-    Target PushNuGetPackage => _ => _
-        .Consumes(CreateNuGetPackage)
-        .Executes(() =>
-        {
-            DotNetNuGetPush(s => s
-                .SetSource(NuGetFeedUrl)
-                .SetTargetPath(ArtifactsDirectory));
-        });
 }

@@ -29,7 +29,6 @@ stages:
       - checkout: none
       - download: current
         artifact: Cos
-      # Push non test NuGet packages from a build to internal organization Feed
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
