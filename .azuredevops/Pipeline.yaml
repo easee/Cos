@@ -2,22 +2,33 @@ stages:
   - stage: continuous_integration
     displayName: 'Build and test'
     pool:
-      name: 'Azure Pipelines'
+      name: 'AWS EC2 Pool'
     jobs:
       - job: Build
         displayName: 'Build and test'
         steps:
-          - task: ShellScript@2
+          - task: AWSShellScript@1
             displayName: 'Build, test and pack'
             inputs:
-              scriptPath: './build.sh'
-              args: 'CreateNuGetPackage'
+              arguments: 'CreateNuGetPackage'
+              filePath: './build.cmd'
+              scriptType: 'filePath'
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
-          - task: ShellScript@2
-            displayName: 'Push NuGet Package'
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
-            inputs:
-              scriptPath: './build.sh'
-              args: 'PushNuGetPackage'
+  - stage: 'PublishNuGetPackage'
+    displayName: 'Publish NuGet Package'
+    dependsOn: 'continuous_integration'
+    pool: 'AWS EC2 Pool'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
+    jobs:
+    - job:
+      displayName: 'Push NuGet package'
+      steps:
+      - checkout: none
+      - task: AWSShellScript@1
+        displayName: 'Push NuGet Package'
+        inputs:
+          arguments: 'PushNuGetPackage'
+          filePath: './build.cmd'
+          scriptType: 'filePath'
