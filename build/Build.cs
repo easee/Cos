@@ -1,5 +1,6 @@
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -70,6 +71,7 @@ class Build : NukeBuild
 
     Target CreateNuGetPackage => _ => _
         .DependsOn(Test)
+        .Produces(ArtifactsDirectory / "*.nupkg")
         .Executes(() =>
         {
             DotNetPack(s => s
@@ -79,10 +81,6 @@ class Build : NukeBuild
                 .EnableNoRestore()
                 .EnableNoBuild());
         });
-
-    Target PublishNuGetPackage => _ => _
-        .DependsOn(CreateNuGetPackage)
-        .Produces(ArtifactsDirectory / "*.*");
 
     Target PushNuGetPackage => _ => _
         .Executes(() =>
