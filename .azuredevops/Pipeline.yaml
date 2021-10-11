@@ -26,12 +26,18 @@ stages:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
+      # Push non test NuGet packages from a build to internal organization Feed
+      - task: DotNetCoreCLI@2
+        inputs:
+        command: 'push'
+        searchPatternPush: '$(System.DefaultWorkingDirectory)/artifacts/**/*.nupkg'
+        feedPublish: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
       #- task: NuGetAuthenticate@0
       #  inputs:
       #    nuGetServiceConnections: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
-      - task: AWSShellScript@1
-        displayName: 'Push NuGet Package'
-        inputs:
-          arguments: 'PushNuGetPackage'
-          filePath: './build.cmd'
-          scriptType: 'filePath'
+      #- task: AWSShellScript@1
+      #  displayName: 'Push NuGet Package'
+      #  inputs:
+      #    arguments: 'PushNuGetPackage'
+      #    filePath: './build.cmd'
+      #    scriptType: 'filePath'
