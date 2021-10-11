@@ -10,23 +10,14 @@ stages:
           - task: ShellScript@2
             displayName: 'Build, test and pack'
             inputs:
-              args: 'CreateNuGetPackage'
               scriptPath: './build.sh'
+              args: 'CreateNuGetPackage'
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
-  - stage: 'PublishNuGetPackage'
-    displayName: 'Publish NuGet Package'
-    dependsOn: 'continuous_integration'
-    pool: 'Azure Pipelines'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/feature/nuget'))
-    jobs:
-    - job:
-      displayName: 'Push NuGet package'
-      steps:
-      - checkout: none
-      - task: ShellScript@2
-        displayName: 'Push NuGet Package'
-        inputs:
-          args: 'PushNuGetPackage'
-          scriptPath: './build.sh'
+          - task: ShellScript@2
+            displayName: 'Push NuGet Package'
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+            inputs:
+              scriptPath: './build.sh'
+              args: 'PushNuGetPackage'
