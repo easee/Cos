@@ -28,7 +28,7 @@ stages:
       - checkout: none
       - task: NuGetAuthenticate@0
         inputs:
-        nuGetServiceConnections: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
+          nuGetServiceConnections: 'https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json'
       - task: AWSShellScript@1
         displayName: 'Push NuGet Package'
         inputs:
