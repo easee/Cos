@@ -84,7 +84,7 @@ class Build : NukeBuild
         });
 
     Target CreateNuGetPackage => _ => _
-        .DependsOn(Test)
+        .DependsOn(Benchmark)
         .Produces(ArtifactsDirectory / "*.nupkg")
         .Executes(() =>
         {
