@@ -7,6 +7,9 @@ namespace Easee.Cos
 {
     /// <summary>
     /// This code originates from the Masterloop code base
+    /// 
+    /// Please be aware that this code is used in applications with high message throughput 
+    /// and changes should be benchmarked using the benchmark project in the solution to ensure stable or improved performance.
     /// </summary>
     public class CosReader : ICosReader
     {
