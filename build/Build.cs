@@ -24,13 +24,15 @@ class Build : NukeBuild
     public static int Main () => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    readonly Configuration Configuration = Configuration.Release;// = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Solution] readonly Solution Solution;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath BenchmarkResultsPath => RootDirectory / "BenchmarkDotNet.Artifacts" / "results" / "Cos.Benchmark.CosDeserialize-report.html";
     AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
+    AbsolutePath BenchmarkProjectPath => SourceDirectory / "Tests" / "Cos.Benchmark" / "Cos.Benchmark.csproj";
     public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
 
     Target Clean => _ => _
@@ -64,6 +66,18 @@ class Build : NukeBuild
         {
             DotNetTest(s => s
                 .SetProjectFile(Solution)
+                .SetConfiguration(Configuration)
+                .EnableNoRestore()
+                .EnableNoBuild());
+        });
+
+    Target Benchmark => _ => _
+        .DependsOn(Test)
+        .Produces(BenchmarkResultsPath)
+        .Executes(() =>
+        {
+            DotNetRun(s => s
+                .SetProjectFile(BenchmarkProjectPath)
                 .SetConfiguration(Configuration)
                 .EnableNoRestore()
                 .EnableNoBuild());
