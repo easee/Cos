@@ -6,6 +6,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -21,12 +22,15 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main () => Execute<Build>(x => x.Pack);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Solution] readonly Solution Solution;
+
+    [GitVersion(Framework = "net5.0")]
+    readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -55,6 +59,8 @@ class Build : NukeBuild
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .EnableNoRestore());
         });
 
@@ -69,13 +75,14 @@ class Build : NukeBuild
                 .EnableNoBuild());
         });
 
-    Target CreateNuGetPackage => _ => _
+    Target Pack => _ => _
         .DependsOn(Test)
         .Produces(ArtifactsDirectory / "*.nupkg")
         .Executes(() =>
         {
             DotNetPack(s => s
                 .SetConfiguration(Configuration)
+                .SetVersion(GitVersion.NuGetVersionV2)
                 .SetProject(NuGetProjectPath)
                 .SetOutputDirectory(ArtifactsDirectory));
         });
