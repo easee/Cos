@@ -29,7 +29,7 @@ stages:
     displayName: 'Publish NuGet Package'
     dependsOn: 'continuous_integration'
     pool: 'AWS EC2 Pool'
-    condition: and(and(succeeded(), eq(variables['Build.SourceBranchName'], 'refs/heads/main')), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
     jobs:
     - job:
       displayName: 'Push NuGet package'
