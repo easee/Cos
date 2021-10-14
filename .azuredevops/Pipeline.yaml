@@ -40,5 +40,5 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
-          searchPatternPush: '$(Build.ArtifactStagingDirectory)/Cos/Cos*.nupkg'
+          searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
           feedPublish: 'easee-norway'
