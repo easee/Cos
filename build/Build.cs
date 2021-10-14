@@ -83,6 +83,8 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetVersion(GitVersion.NuGetVersionV2)
                 .SetProject(NuGetProjectPath)
-                .SetOutputDirectory(ArtifactsDirectory));
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoRestore()
+                .EnableNoBuild());
         });
 }
