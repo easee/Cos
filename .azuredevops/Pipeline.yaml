@@ -15,7 +15,7 @@ stages:
               scriptType: 'filePath'
           - task: PublishPipelineArtifact@1
             inputs:
-              pathToPublish: '$(Build.ArtifactStagingDirectory)'
+              targetPath: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
