@@ -36,8 +36,9 @@ stages:
       steps:
       - checkout: none
       - task: DownloadPipelineArtifact@2
-        artifact: 'Cos'
-        path: '$(Pipeline.Workspace)/artifacts'
+        inputs:
+          artifact: 'Cos'
+          path: '$(Pipeline.Workspace)/artifacts'
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
