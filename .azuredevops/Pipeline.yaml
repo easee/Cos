@@ -1,38 +1,36 @@
 stages:
   - stage: continuous_integration
     displayName: 'Build and test'
-    dependsOn: []
     pool:
       name: 'AWS EC2 Pool'
     jobs:
       - job: Build
         displayName: 'Build and test'
-        dependsOn: []
         steps:
-          - task: DotNetCoreCLI@2
-            displayName: Build
+          - task: AWSShellScript@1
+            displayName: 'Build, test and pack'
             inputs:
-              projects: '**/*.csproj'
-              arguments: '--configuration Release'
-          - task: DotNetCoreCLI@2
-            displayName: Test
+              arguments: 'Pack'
+              filePath: './build.cmd'
+              scriptType: 'filePath'
+          - task: PublishPipelineArtifact@1
             inputs:
-              command: test
-              projects: '**/*[Tt]ests.csproj'
-              arguments: '--configuration Release'
-  - stage: push_nuget_to_feed
-    displayName: 'Push NuGet package to feed'
-    dependsOn: [continuous_integration]
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    pool:
-      name: 'AWS EC2 Pool'
+              targetPath: '$(System.DefaultWorkingDirectory)/artifacts'
+              artifactName: 'Cos'
+  - stage: 'PublishNuGetPackage'
+    displayName: 'Publish NuGet Package'
+    dependsOn: 'continuous_integration'
+    pool: 'AWS EC2 Pool'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
     jobs:
-      - job: NuGetPush
-        displayName: 'Push NuGet'
-        dependsOn: []
-        steps:
-          - task: NuGetCommand@2
-            displayName: 'NuGet push'
-            inputs:
-              command: push
-              publishVstsFeed: '59035f7a-2692-4201-a7f6-86461ac0e315'
+    - job:
+      displayName: 'Push NuGet package'
+      steps:
+      - checkout: none
+      - download: current
+        artifact: Cos
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'push'
+          searchPatternPush: '$(Agent.BuildDirectory)/Cos/**/*.nupkg'
+          feedPublish: 'easee-norway'
