@@ -15,7 +15,7 @@ stages:
               scriptType: 'filePath'
           - task: PublishPipelineArtifact@1
             inputs:
-              pathToPublish: './artifacts'
+              pathToPublish: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
   - stage: 'PublishNuGetPackage'
     displayName: 'Publish NuGet Package'
@@ -32,5 +32,5 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
-          searchPatternPush: '$(Pipeline.Workspace)/Cos/**/*.nupkg'
+          searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
           feedPublish: 'easee-norway'

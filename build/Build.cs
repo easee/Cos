@@ -33,7 +33,7 @@ class Build : NukeBuild
     readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    string ArtifactsDirectory => AzurePipelines.Instance.ArtifactStagingDirectory;
     AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
     public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
 
@@ -77,7 +77,7 @@ class Build : NukeBuild
 
     Target Pack => _ => _
         .DependsOn(Test)
-        .Produces(ArtifactsDirectory / "*.nupkg")
+        .Produces(ArtifactsDirectory)
         .Executes(() =>
         {
             DotNetPack(s => s
