@@ -13,7 +13,7 @@ stages:
       name: 'AWS EC2 Pool'
     jobs:
       - job: Build
-        displayName: 'Build and test'
+        displayName: 'Build, test, pack and push'
         steps:
           - task: AWSShellScript@1
             displayName: 'Build, test and pack'
