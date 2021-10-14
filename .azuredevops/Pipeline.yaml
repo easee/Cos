@@ -25,22 +25,10 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
-  - stage: 'PublishNuGetPackage'
-    displayName: 'Publish NuGet Package'
-    dependsOn: 'continuous_integration'
-    pool: 'AWS EC2 Pool'
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
-    jobs:
-    - job:
-      displayName: 'Push NuGet package'
-      steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: 'Cos'
-          path: '$(Pipeline.Workspace)/artifacts'
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'push'
-          searchPatternPush: '$(Pipeline.Workspace)/artifacts/**/Cos*.nupkg'
-          feedPublish: 'easee-norway'
+          - task: DotNetCoreCLI@2
+            displayName: 'Push NuGet package'
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            inputs:
+              command: 'push'
+              searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
+              feedPublish: 'easee-norway'
