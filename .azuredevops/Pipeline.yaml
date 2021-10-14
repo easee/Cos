@@ -35,10 +35,11 @@ stages:
       displayName: 'Push NuGet package'
       steps:
       - checkout: none
-      - download: current
-        artifact: Cos
+      - task: DownloadPipelineArtifact@2
+        artifact: 'Cos'
+        path: '$(Pipeline.Workspace)/artifacts'
       - task: DotNetCoreCLI@2
         inputs:
           command: 'push'
-          searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
+          searchPatternPush: '$(Pipeline.Workspace)/artifacts/**/Cos*.nupkg'
           feedPublish: 'easee-norway'
