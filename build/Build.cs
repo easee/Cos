@@ -8,8 +8,6 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
-using System.Linq;
-using System.Text.RegularExpressions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -28,10 +26,6 @@ class Build : NukeBuild
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-
-    [Parameter]
-    //string NugetApiUrl = "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
-    string NugetApiUrl = "https://pkgs.dev.azure.com/easee-norway/easee-pipelines/_packaging/costest/nuget/v3/index.json";
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
