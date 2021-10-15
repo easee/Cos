@@ -27,7 +27,8 @@ stages:
               artifactName: 'Cos'
           - task: DotNetCoreCLI@2
             displayName: 'Push NuGet package'
-            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            #condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/push'))
             inputs:
               command: 'push'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'

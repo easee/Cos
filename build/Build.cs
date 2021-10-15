@@ -33,7 +33,7 @@ class Build : NukeBuild
     readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    string ArtifactsDirectory => AzurePipelines.Instance.ArtifactStagingDirectory;
+    string ArtifactsDirectory => IsLocalBuild ? RootDirectory / "artifacts" : AzurePipelines.Instance.ArtifactStagingDirectory;
     AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
     public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
 
@@ -46,6 +46,7 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
+        .DependsOn(Clean)
         .Executes(() =>
         {
             DotNetRestore(s => s
