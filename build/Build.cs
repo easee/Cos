@@ -8,6 +8,8 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
+using System.Linq;
+using System.Text.RegularExpressions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -22,20 +24,21 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main () => Execute<Build>(x => x.Pack);
+    public static int Main() => Execute<Build>(x => x.Pack);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Solution] readonly Solution Solution;
+    [Parameter]
+    //string NugetApiUrl = "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
+    string NugetApiUrl = "https://pkgs.dev.azure.com/easee-norway/easee-pipelines/_packaging/costest/nuget/v3/index.json";
 
-    [GitVersion(Framework = "net5.0")]
-    readonly GitVersion GitVersion;
+    [Solution] readonly Solution Solution;
+    [GitRepository] readonly GitRepository GitRepository;
+    [GitVersion] readonly GitVersion GitVersion;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    string ArtifactsDirectory => IsLocalBuild ? RootDirectory / "artifacts" : AzurePipelines.Instance.ArtifactStagingDirectory;
-    AbsolutePath NuGetProjectPath => SourceDirectory / "Cos" / "Cos.csproj";
-    public string NuGetFeedUrl => "https://pkgs.dev.azure.com/easee-norway/_packaging/easee-norway/nuget/v3/index.json";
+    AbsolutePath ArtifactsDirectory => IsLocalBuild ? RootDirectory / "artifacts" : (AbsolutePath)AzurePipelines.Instance.ArtifactStagingDirectory;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -46,7 +49,6 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
-        .DependsOn(Clean)
         .Executes(() =>
         {
             DotNetRestore(s => s
@@ -62,6 +64,7 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
+                .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
 
@@ -81,11 +84,29 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetPack(s => s
+                .SetProject(Solution.GetProject("Cos"))
                 .SetConfiguration(Configuration)
-                .SetVersion(GitVersion.NuGetVersionV2)
-                .SetProject(NuGetProjectPath)
-                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
                 .EnableNoRestore()
-                .EnableNoBuild());
+                .SetVersion(GitVersion.NuGetVersionV2)
+                .SetOutputDirectory(ArtifactsDirectory));
         });
+
+    Target Push => _ => _
+       .Requires(() => Configuration.Equals(Configuration.Release))
+       //.Requires(() => GitRepository.IsOnMainBranch())
+       //.Requires(() => GitRepository.Tags.Any(t => Regex.IsMatch(t, @"v\d\.\d\.\d.*")))
+       .Executes(() =>
+       {
+           GlobFiles(ArtifactsDirectory, "*.nupkg")
+               .NotEmpty()
+               .Where(x => !x.EndsWith("symbols.nupkg"))
+               .ForEach(x =>
+               {
+                   DotNetNuGetPush(s => s
+                       .SetTargetPath(x)
+                       .SetSource(NugetApiUrl)
+                   );
+               });
+       });
 }
