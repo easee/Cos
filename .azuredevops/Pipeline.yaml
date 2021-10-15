@@ -10,7 +10,7 @@ stages:
   - stage: continuous_integration
     displayName: 'Build and test'
     pool:
-      name: 'AWS EC2 Pool'
+      name: 'Azure Pipelines'
     jobs:
       - job: Build
         displayName: 'Build, test, pack and push'
