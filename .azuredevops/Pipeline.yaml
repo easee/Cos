@@ -21,16 +21,14 @@ stages:
               arguments: 'Pack'
               filePath: './build.cmd'
               scriptType: 'filePath'
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)'
-              artifactName: 'Cos'
+          #- task: PublishPipelineArtifact@1
+          #  inputs:
+          #    targetPath: '$(Build.ArtifactStagingDirectory)'
+          #    artifactName: 'Cos'
           - task: DotNetCoreCLI@2
             displayName: 'Push NuGet package'
             condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             inputs:
-              command: 'custom'
-              custom: 'nuget push'
-              arguments: '--skip-duplicate'
+              command: 'push'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
               feedPublish: 'costest2'
