@@ -29,7 +29,7 @@ stages:
             displayName: 'Push NuGet package'
             condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             inputs:
-              command: 'push'
-              arguments: '--skip-duplicate'
+              command: 'custom'
+              arguments: 'push --skip-duplicate'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
               feedPublish: 'costest2'
