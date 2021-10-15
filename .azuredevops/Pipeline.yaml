@@ -30,7 +30,7 @@ stages:
             condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             inputs:
               command: 'custom'
-              custom: 'push'
+              custom: 'nuget push'
               arguments: '--skip-duplicate'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
               feedPublish: 'costest2'
