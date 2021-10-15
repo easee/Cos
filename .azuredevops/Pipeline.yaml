@@ -10,7 +10,7 @@ stages:
   - stage: continuous_integration
     displayName: 'Build and test'
     pool:
-      name: 'Azure Pipelines'
+      name: 'AWS EC2 Pool'
     jobs:
       - job: Build
         displayName: 'Build, test, pack and push'
@@ -25,10 +25,11 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
-          - task: NuGetCommand@2
+          - task: DotNetCoreCLI@2
             displayName: 'Push NuGet package'
             condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             inputs:
               command: 'push'
-              packagesToPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
-              publishVstsFeed: 'costest2'
+              arguments: '--skip-duplicate'
+              searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
+              feedPublish: 'costest2'
