@@ -91,22 +91,4 @@ class Build : NukeBuild
                 .SetVersion(GitVersion.NuGetVersionV2)
                 .SetOutputDirectory(ArtifactsDirectory));
         });
-
-    Target Push => _ => _
-       .Requires(() => Configuration.Equals(Configuration.Release))
-       //.Requires(() => GitRepository.IsOnMainBranch())
-       //.Requires(() => GitRepository.Tags.Any(t => Regex.IsMatch(t, @"v\d\.\d\.\d.*")))
-       .Executes(() =>
-       {
-           GlobFiles(ArtifactsDirectory, "*.nupkg")
-               .NotEmpty()
-               .Where(x => !x.EndsWith("symbols.nupkg"))
-               .ForEach(x =>
-               {
-                   DotNetNuGetPush(s => s
-                       .SetTargetPath(x)
-                       .SetSource(NugetApiUrl)
-                   );
-               });
-       });
 }

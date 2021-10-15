@@ -4,7 +4,7 @@ trigger:
       - '*'
   tags:
     include:
-      - '*'
+      - v*
 
 stages:
   - stage: continuous_integration
@@ -25,9 +25,11 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
-          - task: AWSShellScript@1
-            displayName: 'Push to NuGet feed'
+          - task: DotNetCoreCLI@2
+            displayName: 'Push NuGet package'
+            #condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/push'))
             inputs:
-              arguments: 'Push'
-              filePath: './build.cmd'
-              scriptType: 'filePath'
+              command: 'push'
+              searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
+              feedPublish: 'costest'
