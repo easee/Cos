@@ -32,4 +32,4 @@ stages:
             inputs:
               command: 'push'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
-              feedPublish: 'costest'
+              feedPublish: 'costest2'
