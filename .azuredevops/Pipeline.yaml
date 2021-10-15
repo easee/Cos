@@ -25,10 +25,10 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)'
               artifactName: 'Cos'
-          - task: DotNetCoreCLI@2
+          - task: NuGetCommand@2
             displayName: 'Push NuGet package'
             condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             inputs:
               command: 'push'
-              searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
-              feedPublish: 'costest2'
+              packagesToPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
+              publishVstsFeed: 'costest2'
