@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3A5FA6D9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Benchmark", "Tests\Cos.Benchmark\Cos.Benchmark.csproj", "{34C7823D-5C58-4FD7-928A-37289271C19A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{1925BB5A-0C7A-4767-9529-D8FC5541798F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,8 +29,6 @@ Global
 		{34C7823D-5C58-4FD7-928A-37289271C19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34C7823D-5C58-4FD7-928A-37289271C19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34C7823D-5C58-4FD7-928A-37289271C19A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1925BB5A-0C7A-4767-9529-D8FC5541798F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1925BB5A-0C7A-4767-9529-D8FC5541798F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
