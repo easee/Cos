@@ -31,4 +31,4 @@ stages:
             inputs:
               command: 'push'
               searchPatternPush: '$(Build.ArtifactStagingDirectory)/**/Cos*.nupkg'
-              feedPublish: 'easee-norway'
+              feedPublish: 'costest2'
