@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
-    <Version>0.0.1</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Copyright>Easee AS</Copyright>
-    <Description>Cos package deserializer</Description>
-    <PackageTags>Easee cos</PackageTags>
-    <RepositoryUrl>https://github.com/easee/Cos</RepositoryUrl>
-    <Company>Easee</Company>
-    <Authors>Easee</Authors>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+		<Version>0.0.1</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Copyright>Easee AS</Copyright>
+		<Description>Cos package deserializer</Description>
+		<PackageTags>Easee cos</PackageTags>
+		<RepositoryUrl>https://github.com/easee/Cos</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Company>Easee</Company>
+		<Authors>Easee</Authors>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
