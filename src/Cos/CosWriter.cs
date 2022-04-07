@@ -1,16 +1,15 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
-using Easee.Cos;
 using System.IO;
 
-namespace Worker.Tests.COS
+namespace Easee.Cos
 {
     /// <summary>
     /// Basic implementation of COSWriter.
     /// Note: This implementation is very basic, and is not byte efficient. It will allocate on section per observation.
     /// </summary>
-    public class COSWriter
+    public class CosWriter
     {
         public static byte[] Serialize(List<Observation> observations, string encoding, byte version, byte cosHeaderFlags)
         {

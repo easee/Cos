@@ -15,8 +15,8 @@ namespace Easee.Cos
     {
         public List<Observation> Deserialize(in byte[] cosData)
         {
-            using MemoryStream stream = new MemoryStream(cosData);
-            using BigEndianBinaryReader reader = new BigEndianBinaryReader(stream);
+            using MemoryStream stream = new(cosData);
+            using BigEndianBinaryReader reader = new(stream);
 
             byte cosVersion = reader.ReadByte();
             if (cosVersion == 1)
@@ -31,7 +31,7 @@ namespace Easee.Cos
 
         private static List<Observation> DeserializeCOSVersion1(BigEndianBinaryReader reader)
         {
-            List<Observation> _observations = new List<Observation>();
+            List<Observation> _observations = new();
 
             byte flags = reader.ReadByte();
             ushort sectionCount = reader.ReadUInt16();
