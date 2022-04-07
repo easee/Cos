@@ -7,7 +7,7 @@ namespace Easee.Cos
 {
     /// <summary>
     /// Basic implementation of COSWriter.
-    /// Note: This implementation is very basic, and is not byte efficient. It will allocate on section per observation.
+    /// Note: This implementation is very basic and is not byte efficient. It is only meant to be used by unit tests.
     /// </summary>
     public class CosWriter
     {
