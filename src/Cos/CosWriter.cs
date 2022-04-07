@@ -11,7 +11,7 @@ namespace Easee.Cos
     /// </summary>
     public class CosWriter
     {
-        public static byte[] Serialize(List<Observation> observations, string encoding, byte version, byte cosHeaderFlags)
+        public static string Serialize(List<Observation> observations, string encoding = "cos", byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
         {
             if ((cosHeaderFlags & (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS) != 0)
             {
@@ -22,12 +22,14 @@ namespace Easee.Cos
                 throw new ArgumentException("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS");
             }
 
-            return encoding switch
+            byte[] bytes = encoding switch
             {
                 "cos" => SerializeCOS(observations, version, cosHeaderFlags),
                 "b64" => SerializeCOSB64(observations, version, cosHeaderFlags),
                 _ => throw new ArgumentException("Unknown encoding: " + encoding),
             };
+
+            return Convert.ToBase64String(bytes);
         }
 
         private static byte[] SerializeCOSB64(List<Observation> observations, byte version, byte cosHeaderFlags)
