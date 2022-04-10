@@ -7,6 +7,9 @@ namespace Cos.Tests
 {
     public class CircularTests
     {
+        private readonly CosReader _reader = new();
+        private readonly CosWriter _writer = new();
+
         private void AssertObservations(List<Observation> input, List<Observation> output)
         {
             Assert.Equal(input.Count, output.Count);
@@ -24,9 +27,9 @@ namespace Cos.Tests
         {
             string input = "AYAABBBkCNoY8rmFAAAAAQFQZQjaGPK5hQAAAAEHzCBmCNoY8rmFAAAAAT/xxqfvnbItwGcI2hjyuYUAAAABAAtoZWxsbyB3b3JsZA==";
 
-            List<Observation> observations = new CosReader().Deserialize(Convert.FromBase64String(input));
+            List<Observation> observations = _reader.Deserialize(Convert.FromBase64String(input));
 
-            string output = CosWriter.SerializeB64(observations);
+            string output = _writer.SerializeB64(observations);
 
             Assert.Equal(input, output);
         }
@@ -39,7 +42,7 @@ namespace Cos.Tests
                 new Observation<Position>(104, DateTime.Parse("2022-04-08"), new Position(1, 2)),
             };
 
-            List<Observation> output = new CosReader().Deserialize(CosWriter.Serialize(input));
+            List<Observation> output = _reader.Deserialize(_writer.SerializeCos(input));
 
             AssertObservations(input, output);
         }
@@ -52,7 +55,7 @@ namespace Cos.Tests
                 new Observation<Position>(104, DateTime.Parse("2022-04-08"), new Position(1, 2, 3)),
             };
 
-            List<Observation> output = new CosReader().Deserialize(CosWriter.Serialize(input));
+            List<Observation> output = _reader.Deserialize(_writer.SerializeCos(input));
 
             AssertObservations(input, output);
         }
@@ -69,7 +72,7 @@ namespace Cos.Tests
                 new Observation<Position>(104, DateTime.Parse("2022-04-08"), new Position(1, 2)),
             };
 
-            List<Observation> output = new CosReader().Deserialize(CosWriter.Serialize(input));
+            List<Observation> output = _reader.Deserialize(_writer.SerializeCos(input));
 
             AssertObservations(input, output);
         }

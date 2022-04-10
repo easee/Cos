@@ -7,6 +7,8 @@ namespace Cos.Tests
 {
     public class CosWriterTests
     {
+        private readonly CosWriter _writer = new();
+
         [Fact]
         public void Base64_result_equals_cos_result()
         {
@@ -19,8 +21,8 @@ namespace Cos.Tests
                 new Observation<Position>(104, DateTime.Parse("2022-04-08"), new Position(1, 2)),
             };
 
-            string resultCos = Convert.ToBase64String(CosWriter.Serialize(observations));
-            string resultB64 = CosWriter.SerializeB64(observations);
+            string resultCos = Convert.ToBase64String(_writer.SerializeCos(observations));
+            string resultB64 = _writer.SerializeB64(observations);
 
             Assert.Equal(resultCos, resultB64);
         }
@@ -28,7 +30,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_boolean_observation()
         {
-            string result = CosWriter.SerializeB64(new()
+            string result = _writer.SerializeB64(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
             });
@@ -41,7 +43,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_integer_observation()
         {
-            string result = CosWriter.SerializeB64(new()
+            string result = _writer.SerializeB64(new()
             {
                 new Observation<int>(101, DateTime.Parse("2022-04-08"), 1996),
             });
@@ -54,7 +56,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_double_observation()
         {
-            string result = CosWriter.SerializeB64(new()
+            string result = _writer.SerializeB64(new()
             {
                 new Observation<double>(102, DateTime.Parse("2022-04-08"), 1.111),
             });
@@ -67,7 +69,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_string_observation()
         {
-            string result = CosWriter.SerializeB64(new()
+            string result = _writer.SerializeB64(new()
             {
                 new Observation<string>(103, DateTime.Parse("2022-04-08"), "hello world"),
             });
@@ -80,7 +82,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_multiple_observations()
         {
-            string result = CosWriter.SerializeB64(new()
+            string result = _writer.SerializeB64(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
                 new Observation<int>(101, DateTime.Parse("2022-04-08"), 1996),

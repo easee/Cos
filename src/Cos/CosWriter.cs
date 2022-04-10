@@ -9,14 +9,14 @@ namespace Easee.Cos
     /// Basic implementation of COSWriter.
     /// Note: This implementation is very basic and is not byte efficient. It is only meant to be used by unit tests.
     /// </summary>
-    public class CosWriter
+    public class CosWriter : ICosWriter
     {
-        public static string SerializeB64(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
+        public string SerializeB64(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
         {
-            return Convert.ToBase64String(Serialize(observations, version, cosHeaderFlags));
+            return Convert.ToBase64String(SerializeCos(observations, version, cosHeaderFlags));
         }
 
-        public static byte[] Serialize(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
+        public byte[] SerializeCos(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
         {
             if ((cosHeaderFlags & (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS) != 0)
             {
@@ -27,11 +27,6 @@ namespace Easee.Cos
                 throw new ArgumentException("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS");
             }
 
-            return SerializeCOS(observations, version, cosHeaderFlags);
-        }
-
-        private static byte[] SerializeCOS(List<Observation> observations, byte version, byte cosHeaderFlags)
-        {
             using MemoryStream stream = new MemoryStream();
             using (BigEndianBinaryWriter writer = new BigEndianBinaryWriter(new BinaryWriter(stream)))
             {

@@ -14,10 +14,7 @@ namespace Easee.Cos
         public int ObservationId { get; }
         public DateTime Timestamp { get; }
 
-        public override string ToString()
-        {
-            return $"ID:{ObservationId}.";
-        }
+        public override string ToString() => $"ID:{ObservationId}.";
 
         public virtual int CompareTo(Observation other) => throw new NotImplementedException();
     }
@@ -31,10 +28,7 @@ namespace Easee.Cos
         }
 
         public TValue Value { get; }
-        public override string ToString()
-        {
-            return $"ID:{ObservationId}. Value:{Value}. Timestamp:{Timestamp}.";
-        }
+        public override string ToString() => $"ID:{ObservationId}. Value:{Value}. Timestamp:{Timestamp}.";
 
         public override int CompareTo(Observation other) {
             return (other is Observation<TValue> o
