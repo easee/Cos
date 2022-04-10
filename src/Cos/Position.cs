@@ -1,6 +1,8 @@
-﻿namespace Easee.Cos
+﻿using System;
+
+namespace Easee.Cos
 {
-    public class Position
+    public class Position : IComparable<Position>
     {
         public Position(double latitude, double longitude, double? altitude = null, double? dop = null)
         {
@@ -14,5 +16,15 @@
         public double Longitude { get; }
         public double? Altitude { get; }
         public double? DOP { get; }
+
+        public int CompareTo(Position pos)
+        {
+            return (pos is Position p
+                && p.Latitude == Latitude
+                && p.Longitude == Longitude
+                && p.Altitude == Altitude
+                && p.DOP == DOP) 
+                ? 0 : 1;
+        }
     }
 }
