@@ -1,7 +1,7 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Easee.Cos
 {
@@ -11,7 +11,12 @@ namespace Easee.Cos
     /// </summary>
     public class CosWriter
     {
-        public static string Serialize(List<Observation> observations, string encoding = "cos", byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
+        public static string SerializeB64(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
+        {
+            return Convert.ToBase64String(Serialize(observations, version, cosHeaderFlags));
+        }
+
+        public static byte[] Serialize(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
         {
             if ((cosHeaderFlags & (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS) != 0)
             {
@@ -22,29 +27,13 @@ namespace Easee.Cos
                 throw new ArgumentException("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS");
             }
 
-            byte[] bytes = encoding switch
-            {
-                "cos" => SerializeCOS(observations, version, cosHeaderFlags),
-                "b64" => SerializeCOSB64(observations, version, cosHeaderFlags),
-                _ => throw new ArgumentException("Unknown encoding: " + encoding),
-            };
-
-            return Convert.ToBase64String(bytes);
-        }
-
-        private static byte[] SerializeCOSB64(List<Observation> observations, byte version, byte cosHeaderFlags)
-        {
-            byte[] cos = SerializeCOS(observations, version, cosHeaderFlags);
-
-            string encodedString = Convert.ToBase64String(cos);
-
-            return Encoding.UTF8.GetBytes(encodedString);
+            return SerializeCOS(observations, version, cosHeaderFlags);
         }
 
         private static byte[] SerializeCOS(List<Observation> observations, byte version, byte cosHeaderFlags)
         {
-            using MemoryStream stream = new();
-            using (BigEndianBinaryWriter writer = new(new BinaryWriter(stream)))
+            using MemoryStream stream = new MemoryStream();
+            using (BigEndianBinaryWriter writer = new BigEndianBinaryWriter(new BinaryWriter(stream)))
             {
                 writer.WriteByte(version);
                 switch (version)
@@ -91,20 +80,23 @@ namespace Easee.Cos
 
         private static COSObservationType GetObservationType(Observation obs)
         {
-            return obs switch
+            if (obs is Observation<bool>) return COSObservationType.COS_OBS_TYPE_BOOLEAN;
+            if (obs is Observation<double>) return COSObservationType.COS_OBS_TYPE_DOUBLE;
+            if (obs is Observation<string>) return COSObservationType.COS_OBS_TYPE_UTF8;
+            if (obs is Observation<Position> obsPos)
             {
-                Observation<bool> => COSObservationType.COS_OBS_TYPE_BOOLEAN,
-                Observation<double> => COSObservationType.COS_OBS_TYPE_DOUBLE,
-                Observation<string> => COSObservationType.COS_OBS_TYPE_UTF8,
-                Observation<Position> => COSObservationType.COS_OBS_TYPE_POSITION_3D,
-                Observation<int> o => o switch
-                {
-                    { Value: >= -128 and <= 127 } => COSObservationType.COS_OBS_TYPE_INT8,
-                    { Value: >= -32768 and <= 32767 } => COSObservationType.COS_OBS_TYPE_INT16,
-                    _ => COSObservationType.COS_OBS_TYPE_INT32
-                },
-                _ => throw new ArgumentException($"Unsupported observation type"),
-            };
+                return obsPos.Value.Altitude == null
+                        ? COSObservationType.COS_OBS_TYPE_POSITION_2D
+                        : COSObservationType.COS_OBS_TYPE_POSITION_3D;
+            }
+            if (obs is Observation<int> obsInt)
+            {
+                if (obsInt.Value >= -128 && obsInt.Value <= 127) return COSObservationType.COS_OBS_TYPE_INT8;
+                if (obsInt.Value >= -32768 && obsInt.Value <= 32767) return COSObservationType.COS_OBS_TYPE_INT16;
+                return COSObservationType.COS_OBS_TYPE_INT32;
+            }
+
+            throw new ArgumentException($"Unsupported observation type");
         }
 
         private static void WriteObservationValue(Observation obs, BigEndianBinaryWriter writer)
@@ -129,18 +121,18 @@ namespace Easee.Cos
                     if (o.Value.DOP != null) writer?.WriteSingle((float)o.Value.DOP);
                     return;
                 case Observation<int> o:
-                    switch (o)
+                    if (o.Value >= -128 && o.Value <= 127)
                     {
-                        case { Value: >= -128 and <= 127 }:
-                            writer?.WriteChar((char)o.Value);
-                            return;
-                        case { Value: >= -32768 and <= 32767 }:
-                            writer?.WriteInt16((short)o.Value);
-                            return;
-                        default:
-                            writer?.WriteInt32(o.Value);
-                            return;
+                        writer?.WriteChar((char)o.Value);
+                        return;
                     }
+                    if (o.Value >= -32768 && o.Value <= 32767)
+                    {
+                        writer?.WriteInt16((short)o.Value);
+                        return;
+                    }
+                    writer?.WriteInt32(o.Value);
+                    return;
                 default:
                     throw new ArgumentException($"Unsupported observation type");
             }

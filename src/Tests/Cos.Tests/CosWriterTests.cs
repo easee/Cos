@@ -9,7 +9,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_boolean_observation()
         {
-            string result = CosWriter.Serialize(new()
+            string result = CosWriter.SerializeB64(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
             });
@@ -22,7 +22,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_integer_observation()
         {
-            string result = CosWriter.Serialize(new()
+            string result = CosWriter.SerializeB64(new()
             {
                 new Observation<int>(101, DateTime.Parse("2022-04-08"), 1996),
             });
@@ -35,7 +35,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_double_observation()
         {
-            string result = CosWriter.Serialize(new()
+            string result = CosWriter.SerializeB64(new()
             {
                 new Observation<double>(102, DateTime.Parse("2022-04-08"), 1.111),
             });
@@ -48,7 +48,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_string_observation()
         {
-            string result = CosWriter.Serialize(new()
+            string result = CosWriter.SerializeB64(new()
             {
                 new Observation<string>(103, DateTime.Parse("2022-04-08"), "hello world"),
             });
@@ -61,7 +61,7 @@ namespace Cos.Tests
         [Fact]
         public void Write_multiple_observations()
         {
-            string result = CosWriter.Serialize(new()
+            string result = CosWriter.SerializeB64(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
                 new Observation<int>(101, DateTime.Parse("2022-04-08"), 1996),
