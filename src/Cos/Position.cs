@@ -17,9 +17,9 @@ namespace Easee.Cos
         public double? Altitude { get; }
         public double? DOP { get; }
 
-        public int CompareTo(Position pos)
+        public int CompareTo(Position? p)
         {
-            return (pos is Position p
+            return (p != null
                 && p.Latitude == Latitude
                 && p.Longitude == Longitude
                 && p.Altitude == Altitude

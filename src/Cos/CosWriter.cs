@@ -11,12 +11,7 @@ namespace Easee.Cos
     /// </summary>
     public class CosWriter : ICosWriter
     {
-        public string SerializeB64(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
-        {
-            return Convert.ToBase64String(SerializeCos(observations, version, cosHeaderFlags));
-        }
-
-        public byte[] SerializeCos(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
+        public byte[] Serialize(List<Observation> observations, byte version = 1, byte cosHeaderFlags = (byte)COSHeaderFlag.COS_HEADER_64BIT_TIMESTAMPS)
         {
             if ((cosHeaderFlags & (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS) != 0)
             {
@@ -99,34 +94,34 @@ namespace Easee.Cos
             switch (obs)
             {
                 case Observation<bool> o:
-                    writer?.WriteByte((byte)(o.Value ? 1 : 0));
+                    writer.WriteByte((byte)(o.Value ? 1 : 0));
                     return; ;
                 case Observation<double> o:
-                    writer?.WriteDouble(o.Value);
+                    writer.WriteDouble(o.Value);
                     return;
                 case Observation<string> o:
                     var utf8 = Encoding.UTF8.GetBytes(o.Value);
-                    writer?.WriteUInt16((ushort)utf8.Length);
-                    writer?.WriteBytes(utf8);
+                    writer.WriteUInt16((ushort)utf8.Length);
+                    writer.WriteBytes(utf8);
                     return;
                 case Observation<Position> o:
-                    writer?.WriteSingle((float)o.Value.Latitude);
-                    writer?.WriteSingle((float)o.Value.Longitude);
-                    if (o.Value.Altitude != null) writer?.WriteSingle((float)o.Value.Altitude);
-                    if (o.Value.DOP != null) writer?.WriteSingle((float)o.Value.DOP);
+                    writer.WriteSingle((float)o.Value.Latitude);
+                    writer.WriteSingle((float)o.Value.Longitude);
+                    if (o.Value.Altitude != null) writer.WriteSingle((float)o.Value.Altitude);
+                    if (o.Value.DOP != null) writer.WriteSingle((float)o.Value.DOP);
                     return;
                 case Observation<int> o:
                     if (o.Value >= -128 && o.Value <= 127)
                     {
-                        writer?.WriteChar((char)o.Value);
+                        writer.WriteChar((char)o.Value);
                         return;
                     }
                     if (o.Value >= -32768 && o.Value <= 32767)
                     {
-                        writer?.WriteInt16((short)o.Value);
+                        writer.WriteInt16((short)o.Value);
                         return;
                     }
-                    writer?.WriteInt32(o.Value);
+                    writer.WriteInt32(o.Value);
                     return;
                 default:
                     throw new ArgumentException($"Unsupported observation type");
