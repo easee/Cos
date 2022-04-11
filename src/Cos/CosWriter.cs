@@ -32,7 +32,7 @@ namespace Easee.Cos
                         SerializeCOSVersion1(writer, observations, cosHeaderFlags);
                         break;
                     default:
-                        throw new Exception($"Unsupported COS version: {version}");
+                        throw new ArgumentException($"Unsupported COS version: {version}");
                 }
             }
 

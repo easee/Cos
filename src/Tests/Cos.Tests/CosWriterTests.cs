@@ -9,6 +9,50 @@ namespace Cos.Tests
         private readonly CosWriter _writer = new();
 
         [Fact]
+        public void Cos_version_0_should_throw()
+        {
+            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            {
+                new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
+            }, 0));
+
+            Assert.Equal("Unsupported COS version: 0", err.Message);
+        }
+
+        [Fact]
+        public void Cos_version_too_high_should_throw()
+        {
+            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            {
+                new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
+            }, 2));
+
+            Assert.Equal("Unsupported COS version: 2", err.Message);
+        }
+
+        [Fact]
+        public void Header_byte_with_multi_observations_should_throw()
+        {
+            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            {
+                new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
+            }, 1, (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS));
+
+            Assert.Equal("cosHeaderFlags not supported: COS_HEADER_MULTI_OBSERVATIONS", err.Message);
+        }
+
+        [Fact]
+        public void Header_byte_with_multi_timestamps_should_throw()
+        {
+            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            {
+                new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
+            }, 1, (byte)COSHeaderFlag.COS_HEADER_MULTI_TIMESTAMPS));
+
+            Assert.Equal("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS", err.Message);
+        }
+
+        [Fact]
         public void Write_boolean_observation()
         {
             string result = Convert.ToBase64String(_writer.Serialize(new()
