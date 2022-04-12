@@ -16,7 +16,7 @@ namespace Easee.Cos
 
         public override string ToString() => $"ID:{ObservationId}.";
 
-        public virtual int CompareTo(Observation? other) => throw new NotImplementedException();
+        public abstract int CompareTo(Observation? other);
     }
 
     public class Observation<TValue> : Observation
