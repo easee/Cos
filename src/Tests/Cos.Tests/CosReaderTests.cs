@@ -9,12 +9,7 @@ namespace Cos.Tests
 {
     public class CosReaderTests
     {
-        private readonly CosReader _reader;
-
-        public CosReaderTests()
-        {
-            _reader = new();
-        }
+        private readonly CosReader _reader = new();
 
         [Fact]
         public void Decode_long_message_to_single_observation()

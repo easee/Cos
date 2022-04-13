@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Easee.Cos
 {
-    public abstract class Observation
+    public abstract class Observation : IComparable<Observation>
     {
         public Observation(int observationId, DateTime timestamp)
         {
@@ -13,10 +14,9 @@ namespace Easee.Cos
         public int ObservationId { get; }
         public DateTime Timestamp { get; }
 
-        public override string ToString()
-        {
-            return $"ID:{ObservationId}.";
-        }
+        public override string ToString() => $"ID:{ObservationId}.";
+
+        public abstract int CompareTo(Observation? other);
     }
 
     public class Observation<TValue> : Observation
@@ -28,9 +28,14 @@ namespace Easee.Cos
         }
 
         public TValue Value { get; }
-        public override string ToString()
-        {
-            return $"ID:{ObservationId}. Value:{Value}. Timestamp:{Timestamp}.";
+        public override string ToString() => $"ID:{ObservationId}. Value:{Value}. Timestamp:{Timestamp}.";
+
+        public override int CompareTo(Observation? other) {
+            return (other is Observation<TValue> o
+                && o.ObservationId == ObservationId
+                && o.Timestamp == Timestamp
+                && Comparer<TValue>.Default.Compare(Value, o.Value) == 0) 
+                ? 0 : 1;
         }
     }
 }
