@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cos.Exceptions;
 using Xunit;
 
 namespace Cos.Tests
@@ -58,7 +59,7 @@ namespace Cos.Tests
         {
             byte[] data = Encoding.UTF8.GetBytes("InvalidCosData"); ;
 
-            Assert.Throws<Exception>(() => _reader.Deserialize(data));
+            Assert.Throws<UnsupportedCosVersionException>(() => _reader.Deserialize(data));
         }
     }
 }

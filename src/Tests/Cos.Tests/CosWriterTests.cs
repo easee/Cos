@@ -1,5 +1,6 @@
 using Easee.Cos;
 using System;
+using Cos.Exceptions;
 using Xunit;
 
 namespace Cos.Tests
@@ -11,7 +12,7 @@ namespace Cos.Tests
         [Fact]
         public void Cos_version_0_should_throw()
         {
-            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            var err = Assert.Throws<UnsupportedCosVersionException>(() => _writer.Serialize(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
             }, 0));
@@ -22,7 +23,7 @@ namespace Cos.Tests
         [Fact]
         public void Cos_version_too_high_should_throw()
         {
-            var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
+            var err = Assert.Throws<UnsupportedCosVersionException>(() => _writer.Serialize(new()
             {
                 new Observation<bool>(100, DateTime.Parse("2022-04-08"), true),
             }, 2));

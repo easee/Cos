@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Cos.Exceptions;
 
 namespace Easee.Cos
 {
@@ -25,7 +26,7 @@ namespace Easee.Cos
             }
             else
             {
-                throw new Exception($"Unsupported COS version: {cosVersion}");
+                throw new UnsupportedCosVersionException($"Unsupported COS version: {cosVersion}");
             }
         }
 
@@ -150,7 +151,7 @@ namespace Easee.Cos
                     byte[] vUTF8 = reader.ReadBytes(vUTF8Length);
                     return new Observation<string>(observationId, timestamp, Encoding.UTF8.GetString(vUTF8));
                 default:
-                    throw new ArgumentException($"Unsupported observation type value: {observationType}.");
+                    throw new UnsupportedObservationTypeException($"Unsupported observation type value: {observationType}.");
             }
         }
     }

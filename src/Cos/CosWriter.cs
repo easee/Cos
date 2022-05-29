@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Cos.Exceptions;
 
 namespace Easee.Cos
 {
@@ -32,7 +33,7 @@ namespace Easee.Cos
                         SerializeCOSVersion1(writer, observations, cosHeaderFlags);
                         break;
                     default:
-                        throw new ArgumentException($"Unsupported COS version: {version}");
+                        throw new UnsupportedCosVersionException($"Unsupported COS version: {version}");
                 }
             }
 
@@ -86,7 +87,7 @@ namespace Easee.Cos
                 return COSObservationType.COS_OBS_TYPE_INT32;
             }
 
-            throw new ArgumentException($"Unsupported observation type");
+            throw new UnsupportedObservationTypeException($"Unsupported observation type");
         }
 
         private static void WriteObservationValue(Observation obs, BigEndianBinaryWriter writer)
@@ -124,7 +125,7 @@ namespace Easee.Cos
                     writer.WriteInt32(o.Value);
                     return;
                 default:
-                    throw new ArgumentException($"Unsupported observation type");
+                    throw new UnsupportedObservationTypeException($"Unsupported observation type");
             }
         }
     }
