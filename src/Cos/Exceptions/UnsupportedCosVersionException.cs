@@ -1,6 +1,6 @@
 using System;
 
-namespace Cos.Exceptions
+namespace Easee.Cos.Exceptions
 {
     public class UnsupportedCosVersionException : Exception
     {

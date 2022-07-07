@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cos.Exceptions;
+using Easee.Cos.Exceptions;
 using Xunit;
 
 namespace Cos.Tests
