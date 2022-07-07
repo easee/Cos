@@ -31,7 +31,7 @@ namespace Easee.Cos
                 Type b when b == typeof(bool) => ObservationType.Boolean,
                 Type s when s == typeof(string) => ObservationType.String,
                 Type p when p == typeof(Position) => ObservationType.Position,
-                _ => throw new UnsupportedObservationTypeException(typeof(TValue).FullName),
+                _ => throw new UnsupportedObservationTypeException(typeof(TValue)),
             })
         {
             Value = value;

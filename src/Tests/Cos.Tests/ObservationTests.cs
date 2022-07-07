@@ -1,5 +1,7 @@
 ﻿using Easee.Cos;
+using Easee.Cos.Exceptions;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Cos.Tests
@@ -39,6 +41,17 @@ namespace Cos.Tests
         {
             var observation = new Observation<Position>(150, DateTime.UtcNow, new(59, 10));
             Assert.Equal(ObservationType.Position, observation.Type);
+        }
+
+        [Fact]
+        public void Unsupported_type()
+        {
+            var err = Assert.Throws<UnsupportedObservationTypeException>(() =>
+            {
+                new Observation<List<string>>(150, DateTime.UtcNow, new() { });
+            });
+
+            Assert.Equal(typeof(List<string>).FullName, err.Message);
         }
     }
 }
