@@ -1,6 +1,6 @@
 using Easee.Cos;
 using System;
-using Cos.Exceptions;
+using Easee.Cos.Exceptions;
 using Xunit;
 
 namespace Cos.Tests
