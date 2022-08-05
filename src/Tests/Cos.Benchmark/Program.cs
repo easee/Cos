@@ -1,10 +1,10 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Easee.Cos;
 using System;
 using System.Collections.Generic;
+using Easee.Wingman.Types;
 
-namespace Cos.Benchmark
+namespace Easee.Cos.Benchmark
 {
     [MemoryDiagnoser]
     public class CosDeserialize

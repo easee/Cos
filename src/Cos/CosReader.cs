@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Easee.Cos.Exceptions;
+using Easee.Wingman.Types;
 
 namespace Easee.Cos
 {
