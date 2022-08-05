@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Easee.Wingman.Types;
 
 namespace Easee.Cos
 {

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net6.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Copyright>Easee AS</Copyright>
@@ -11,7 +11,7 @@
         <RepositoryType>git</RepositoryType>
         <Company>Easee</Company>
         <Authors>Easee</Authors>
-        <Title>COS Package Deserializer</Title>
+        <Title>COS Package Serializer and Deserializer</Title>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
         <DebugType>embedded</DebugType>
@@ -21,6 +21,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+        <PackageReference Include="System.Text.Json" Version="6.0.5" />
+        <PackageReference Include="Easee.Wingman" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
