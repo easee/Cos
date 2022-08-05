@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Easee.Cos
 {
     public class Position : IComparable<Position>
     {
+        private static readonly JsonSerializerOptions _jsonSerializationOptions = new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        };
+
         public Position(double latitude, double longitude, double? altitude = null, double? dop = null)
         {
             Latitude = latitude;
@@ -26,5 +33,7 @@ namespace Easee.Cos
                 && p.DOP == DOP) 
                 ? 0 : 1;
         }
+
+        public override string ToString() => JsonSerializer.Serialize(this, _jsonSerializationOptions);
     }
 }
