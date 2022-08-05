@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Easee.Cos.Exceptions;
 
 namespace Easee.Cos
@@ -17,9 +18,9 @@ namespace Easee.Cos
         public ObservationType Type { get; }
         public DateTime Timestamp { get; }
 
-        public override string ToString() => $"ID:{ObservationId}.";
-
         public abstract int CompareTo(Observation? other);
+
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 
     public class Observation<TValue> : Observation
@@ -38,7 +39,6 @@ namespace Easee.Cos
         }
 
         public TValue Value { get; }
-        public override string ToString() => $"ID:{ObservationId}. Value:{Value}. Timestamp:{Timestamp}.";
 
         public override int CompareTo(Observation? other) {
             return (other is Observation<TValue> o
