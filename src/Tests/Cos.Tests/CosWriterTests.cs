@@ -80,6 +80,19 @@ public class CosWriterTests
     }
 
     [Fact]
+    public void Write_negative_integer_observation()
+    {
+        string result = Convert.ToBase64String(_writer.Serialize(new()
+        {
+            new Observation<int>(100, new DateTime(2022, 8, 4).ToUniversalTime(), -1),
+        }));
+
+        string expected = "AYAAAXBkCNp1m4K6sAAAAf8=";
+
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
     public void Write_double_observation()
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()

@@ -115,7 +115,7 @@ namespace Easee.Cos
                 case Observation<int> o:
                     if (o.Value >= -128 && o.Value <= 127)
                     {
-                        writer.WriteChar((char)o.Value);
+                        writer.WriteByte((byte)o.Value);
                         return;
                     }
                     if (o.Value >= -32768 && o.Value <= 32767)
