@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Running;
 using System;
 using System.Collections.Generic;
-using Easee.Wingman.Types;
+using Cos.Types;
 
 namespace Easee.Cos.Benchmark
 {

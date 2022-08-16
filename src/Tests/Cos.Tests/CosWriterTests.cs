@@ -1,9 +1,10 @@
 using System;
-using Xunit;
+using Cos.Types;
+using Easee.Cos;
 using Easee.Cos.Exceptions;
-using Easee.Wingman.Types;
+using Xunit;
 
-namespace Easee.Cos.Tests;
+namespace Cos.Tests;
 
 public class CosWriterTests
 {

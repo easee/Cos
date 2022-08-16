@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Cos.Types;
 using Xunit;
-using Easee.Wingman.Types;
+using Observation = Cos.Types.Observation;
 
 namespace Easee.Cos.Tests;
 
