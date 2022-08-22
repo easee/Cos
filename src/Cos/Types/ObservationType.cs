@@ -1,4 +1,4 @@
-namespace Cos.Types;
+namespace Easee.Cos.Types;
 
 public enum ObservationType
 {

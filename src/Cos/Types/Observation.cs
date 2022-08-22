@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Cos.Types;
+namespace Easee.Cos.Types;
 
 public abstract class Observation : IComparable<Observation>
 {

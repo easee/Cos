@@ -1,8 +1,8 @@
+using Easee.Cos.Types;
 using System;
 using System.Collections.Generic;
-using Cos.Types;
 using Xunit;
-using Observation = Cos.Types.Observation;
+using Observation = Easee.Cos.Types.Observation;
 
 namespace Easee.Cos.Tests;
 

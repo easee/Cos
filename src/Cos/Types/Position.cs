@@ -2,11 +2,11 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Cos.Types;
+namespace Easee.Cos.Types;
 
 public class Position : IComparable<Position>
 {
-    private static readonly JsonSerializerOptions _jsonSerializationOptions = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions _jsonSerializationOptions = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };

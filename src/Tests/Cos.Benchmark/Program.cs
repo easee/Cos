@@ -1,8 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Easee.Cos.Types;
 using System;
 using System.Collections.Generic;
-using Cos.Types;
 
 namespace Easee.Cos.Benchmark
 {

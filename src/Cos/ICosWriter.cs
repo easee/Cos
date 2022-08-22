@@ -1,5 +1,5 @@
+using Easee.Cos.Types;
 using System.Collections.Generic;
-using Cos.Types;
 
 namespace Easee.Cos;
 

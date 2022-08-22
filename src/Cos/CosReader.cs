@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Easee.Cos.Exceptions;
+using Easee.Cos.Types;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Cos.Types;
-using Easee.Cos.Exceptions;
 
 namespace Easee.Cos
 {
@@ -17,8 +17,8 @@ namespace Easee.Cos
     {
         public List<Observation> Deserialize(in byte[] cosData)
         {
-            using MemoryStream stream = new MemoryStream(cosData);
-            using BigEndianBinaryReader reader = new BigEndianBinaryReader(stream);
+            using MemoryStream stream = new(cosData);
+            using BigEndianBinaryReader reader = new(stream);
 
             byte cosVersion = reader.ReadByte();
             if (cosVersion == 1)

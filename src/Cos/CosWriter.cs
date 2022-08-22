@@ -1,9 +1,9 @@
+using Easee.Cos.Exceptions;
+using Easee.Cos.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Cos.Types;
-using Easee.Cos.Exceptions;
 
 namespace Easee.Cos
 {
