@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Easee.Cos.Types;
 
-public abstract class Observation : IComparable<Observation>
+public abstract class Observation : IEquatable<object>
 {
     public Observation(int observationId, DateTime timestamp, ObservationType type)
     {
@@ -17,7 +17,11 @@ public abstract class Observation : IComparable<Observation>
     public ObservationType Type { get; }
     public DateTime Timestamp { get; }
 
-    public abstract int CompareTo(Observation? other);
+    public abstract override bool Equals(object? other);
+    public abstract override int GetHashCode();
+
+    public static bool operator ==(Observation a, Observation b) => a.Equals(b);
+    public static bool operator !=(Observation a, Observation b) => !a.Equals(b);
 
     public override string ToString() => JsonSerializer.Serialize(this);
 }
@@ -40,13 +44,17 @@ public class Observation<TValue> : Observation
 
     public TValue Value { get; }
 
-    public override int CompareTo(Observation? other)
+    public override bool Equals(object? other)
     {
         return (other is Observation<TValue> o
                 && o.ObservationId == ObservationId
                 && o.Type == Type
                 && o.Timestamp == Timestamp
-                && Comparer<TValue>.Default.Compare(Value, o.Value) == 0)
-            ? 0 : 1;
+                && EqualityComparer<TValue>.Default.Equals(Value, o.Value));
+    }
+
+    public override int GetHashCode()
+    {
+        return $"{ObservationId}_{Type}_{Timestamp}_{Value}".GetHashCode();
     }
 }

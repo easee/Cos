@@ -19,7 +19,7 @@ public class CircularTests
         {
             var obsInput = input[i];
             var obsOutput = output[i];
-            Assert.Equal(0, obsInput.CompareTo(obsOutput));
+            Assert.True(obsInput == obsOutput);
         }
     }
 

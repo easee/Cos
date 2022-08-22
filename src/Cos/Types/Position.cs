@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Easee.Cos.Types;
 
-public class Position : IComparable<Position>
+public class Position : IEquatable<object>
 {
     private static readonly JsonSerializerOptions _jsonSerializationOptions = new()
     {
@@ -24,15 +24,18 @@ public class Position : IComparable<Position>
     public double? Altitude { get; }
     public double? DOP { get; }
 
-    public int CompareTo(Position? p)
+    public override string ToString() => JsonSerializer.Serialize(this, _jsonSerializationOptions);
+
+    public override bool Equals(object? obj)
     {
-        return (p != null
+        return (obj is Position p
                 && p.Latitude == Latitude
                 && p.Longitude == Longitude
                 && p.Altitude == Altitude
-                && p.DOP == DOP)
-            ? 0 : 1;
+                && p.DOP == DOP);
     }
+    public override int GetHashCode() => $"{Latitude}_{Longitude}_{Altitude}_{DOP}".GetHashCode();
 
-    public override string ToString() => JsonSerializer.Serialize(this, _jsonSerializationOptions);
+    public static bool operator ==(Position a, Position b) => a.Equals(b);
+    public static bool operator !=(Position a, Position b) => !a.Equals(b);
 }
