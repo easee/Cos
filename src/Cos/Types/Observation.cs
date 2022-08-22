@@ -6,14 +6,14 @@ namespace Easee.Cos.Types;
 
 public abstract class Observation : IEquatable<object>
 {
-    public Observation(int observationId, DateTime timestamp, ObservationType type)
+    public Observation(int id, DateTime timestamp, ObservationType type)
     {
-        ObservationId = observationId;
+        Id = id;
         Type = type;
         Timestamp = timestamp;
     }
 
-    public int ObservationId { get; }
+    public int Id { get; }
     public ObservationType Type { get; }
     public DateTime Timestamp { get; }
 
@@ -28,8 +28,8 @@ public abstract class Observation : IEquatable<object>
 
 public class Observation<TValue> : Observation
 {
-    public Observation(int observationId, DateTime timestamp, TValue value)
-        : base(observationId, timestamp, typeof(TValue) switch
+    public Observation(int id, DateTime timestamp, TValue value)
+        : base(id, timestamp, typeof(TValue) switch
         {
             Type i when i == typeof(int) => ObservationType.Integer,
             Type d when d == typeof(double) => ObservationType.Double,
@@ -47,7 +47,7 @@ public class Observation<TValue> : Observation
     public override bool Equals(object? other)
     {
         return (other is Observation<TValue> o
-                && o.ObservationId == ObservationId
+                && o.Id == Id
                 && o.Type == Type
                 && o.Timestamp == Timestamp
                 && EqualityComparer<TValue>.Default.Equals(Value, o.Value));
@@ -55,6 +55,6 @@ public class Observation<TValue> : Observation
 
     public override int GetHashCode()
     {
-        return $"{ObservationId}_{Type}_{Timestamp}_{Value}".GetHashCode();
+        return $"{Id}_{Type}_{Timestamp}_{Value}".GetHashCode();
     }
 }

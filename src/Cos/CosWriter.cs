@@ -24,8 +24,8 @@ namespace Easee.Cos
                 throw new ArgumentException("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS");
             }
 
-            using MemoryStream stream = new MemoryStream();
-            using (BigEndianBinaryWriter writer = new BigEndianBinaryWriter(new BinaryWriter(stream)))
+            using MemoryStream stream = new();
+            using (BigEndianBinaryWriter writer = new(new BinaryWriter(stream)))
             {
                 writer.WriteByte(version);
                 switch (version)
@@ -50,7 +50,7 @@ namespace Easee.Cos
 
             foreach (Observation obs in observations)
             {
-                ushort descriptor = (ushort)((ushort)(GetObservationType(obs)) << 12 | ((ushort)obs.ObservationId) & 0xfff);
+                ushort descriptor = (ushort)((ushort)GetObservationType(obs) << 12 | ((ushort)obs.Id) & 0xfff);
 
                 writer.WriteUInt16(descriptor);
 
