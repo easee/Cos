@@ -1,5 +1,5 @@
 using Easee.Cos.Exceptions;
-using Easee.Cos.Types;
+using IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -110,7 +110,6 @@ namespace Easee.Cos
                     writer.WriteSingle((float)o.Value.Latitude);
                     writer.WriteSingle((float)o.Value.Longitude);
                     if (o.Value.Altitude != null) writer.WriteSingle((float)o.Value.Altitude);
-                    if (o.Value.DOP != null) writer.WriteSingle((float)o.Value.DOP);
                     return;
                 case Observation<int> o:
                     if (o.Value >= -128 && o.Value <= 127)

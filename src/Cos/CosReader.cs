@@ -1,5 +1,5 @@
 ﻿using Easee.Cos.Exceptions;
-using Easee.Cos.Types;
+using IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
 using System.IO;

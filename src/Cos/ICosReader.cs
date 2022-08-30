@@ -1,4 +1,4 @@
-﻿using Easee.Cos.Types;
+﻿using IoT.DataTypes.Observations;
 using System.Collections.Generic;
 
 namespace Easee.Cos
