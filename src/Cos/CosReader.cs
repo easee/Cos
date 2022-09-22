@@ -1,5 +1,5 @@
 ﻿using Easee.Cos.Exceptions;
-using IoT.DataTypes.Observations;
+using Easee.IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -112,45 +112,45 @@ namespace Easee.Cos
             {
                 case COSObservationType.COS_OBS_TYPE_BOOLEAN:
                     byte vBoolean = reader.ReadByte();
-                    return new Observation<bool>(observationId, timestamp, (vBoolean == 1));
+                    return new Observation<bool>(observationId, timestamp, DateTime.UnixEpoch, (vBoolean == 1));
                 case COSObservationType.COS_OBS_TYPE_DOUBLE:
                     double vDouble = reader.ReadDouble();
-                    return new Observation<double>(observationId, timestamp, vDouble);
+                    return new Observation<double>(observationId, timestamp, DateTime.UnixEpoch, vDouble);
                 case COSObservationType.COS_OBS_TYPE_FLOAT:
                     double vFloat = reader.ReadSingle();
-                    return new Observation<double>(observationId, timestamp, vFloat);
+                    return new Observation<double>(observationId, timestamp, DateTime.UnixEpoch, vFloat);
                 case COSObservationType.COS_OBS_TYPE_INT32:
                     Int32 vInt32 = reader.ReadInt32();
-                    return new Observation<int>(observationId, timestamp, vInt32);
+                    return new Observation<int>(observationId, timestamp, DateTime.UnixEpoch, vInt32);
                 case COSObservationType.COS_OBS_TYPE_INT16:
                     Int16 vInt16 = reader.ReadInt16();
-                    return new Observation<int>(observationId, timestamp, vInt16);
+                    return new Observation<int>(observationId, timestamp, DateTime.UnixEpoch, vInt16);
                 case COSObservationType.COS_OBS_TYPE_UINT16:
                     UInt16 vUInt16 = reader.ReadUInt16();
-                    return new Observation<int>(observationId, timestamp, vUInt16);
+                    return new Observation<int>(observationId, timestamp, DateTime.UnixEpoch, vUInt16);
                 case COSObservationType.COS_OBS_TYPE_INT8:
                     sbyte vInt8 = reader.ReadSByte();
-                    return new Observation<int>(observationId, timestamp, vInt8);
+                    return new Observation<int>(observationId, timestamp, DateTime.UnixEpoch, vInt8);
                 case COSObservationType.COS_OBS_TYPE_UINT8:
                     byte vUInt8 = reader.ReadByte();
-                    return new Observation<int>(observationId, timestamp, vUInt8);
+                    return new Observation<int>(observationId, timestamp, DateTime.UnixEpoch, vUInt8);
                 case COSObservationType.COS_OBS_TYPE_POSITION_2D:
                     double vPos2DLat = reader.ReadSingle();
                     double vPos2DLon = reader.ReadSingle();
-                    return new Observation<Position>(observationId, timestamp, new Position(vPos2DLat, vPos2DLon));
+                    return new Observation<Position>(observationId, timestamp, DateTime.UnixEpoch, new Position(vPos2DLat, vPos2DLon));
                 case COSObservationType.COS_OBS_TYPE_POSITION_3D:
                     double vPos3DLat = reader.ReadSingle();
                     double vPos3DLon = reader.ReadSingle();
                     double vPos3DAlt = reader.ReadSingle();
-                    return new Observation<Position>(observationId, timestamp, new Position(vPos3DLat, vPos3DLon, vPos3DAlt));
+                    return new Observation<Position>(observationId, timestamp, DateTime.UnixEpoch, new Position(vPos3DLat, vPos3DLon, vPos3DAlt));
                 case COSObservationType.COS_OBS_TYPE_ASCII:
                     ushort vAsciiLength = reader.ReadUInt16();
                     char[] vAscii = (char[])reader.ReadChars(vAsciiLength);
-                    return new Observation<string>(observationId, timestamp, new string(vAscii));
+                    return new Observation<string>(observationId, timestamp, DateTime.UnixEpoch, new string(vAscii));
                 case COSObservationType.COS_OBS_TYPE_UTF8:
                     ushort vUTF8Length = reader.ReadUInt16();
                     byte[] vUTF8 = reader.ReadBytes(vUTF8Length);
-                    return new Observation<string>(observationId, timestamp, Encoding.UTF8.GetString(vUTF8));
+                    return new Observation<string>(observationId, timestamp, DateTime.UnixEpoch, Encoding.UTF8.GetString(vUTF8));
                 default:
                     throw new UnsupportedObservationTypeException($"Unsupported observation type value: {observationType}.");
             }

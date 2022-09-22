@@ -1,5 +1,5 @@
 using Easee.Cos.Exceptions;
-using IoT.DataTypes.Observations;
+using Easee.IoT.DataTypes.Observations;
 using System;
 using Xunit;
 
@@ -15,7 +15,7 @@ public class CosWriterTests
     {
         var err = Assert.Throws<UnsupportedCosVersionException>(() => _writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
         }, 0));
 
         Assert.Equal("Unsupported COS version: 0", err.Message);
@@ -26,7 +26,7 @@ public class CosWriterTests
     {
         var err = Assert.Throws<UnsupportedCosVersionException>(() => _writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
         }, 2));
 
         Assert.Equal("Unsupported COS version: 2", err.Message);
@@ -37,7 +37,7 @@ public class CosWriterTests
     {
         var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
         }, 1, (byte)COSHeaderFlag.COS_HEADER_MULTI_OBSERVATIONS));
 
         Assert.Equal("cosHeaderFlags not supported: COS_HEADER_MULTI_OBSERVATIONS", err.Message);
@@ -48,7 +48,7 @@ public class CosWriterTests
     {
         var err = Assert.Throws<ArgumentException>(() => _writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
         }, 1, (byte)COSHeaderFlag.COS_HEADER_MULTI_TIMESTAMPS));
 
         Assert.Equal("cosHeaderFlags not supported: COS_HEADER_MULTI_TIMESTAMPS", err.Message);
@@ -59,7 +59,7 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
         }));
 
         string expected = "AYAAARBkCNoY8rmFAAAAAQE=";
@@ -72,7 +72,7 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<int>(101, _timestamp, 1996),
+            new Observation<int>(101, _timestamp, DateTime.UnixEpoch, 1996),
         }));
 
         string expected = "AYAAAVBlCNoY8rmFAAAAAQfM";
@@ -85,7 +85,7 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<int>(100, _timestamp, -1),
+            new Observation<int>(100, _timestamp, DateTime.UnixEpoch, -1),
         }));
 
         string expected = "AYAAAXBkCNoY8rmFAAAAAf8=";
@@ -98,7 +98,7 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<double>(102, _timestamp, 1.111),
+            new Observation<double>(102, _timestamp, DateTime.UnixEpoch, 1.111),
         }));
 
         string expected = "AYAAASBmCNoY8rmFAAAAAT/xxqfvnbIt";
@@ -111,7 +111,7 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<string>(103, _timestamp, "hello world"),
+            new Observation<string>(103, _timestamp, DateTime.UnixEpoch, "hello world"),
         }));
 
         string expected = "AYAAAcBnCNoY8rmFAAAAAQALaGVsbG8gd29ybGQ=";
@@ -124,10 +124,10 @@ public class CosWriterTests
     {
         string result = Convert.ToBase64String(_writer.Serialize(new()
         {
-            new Observation<bool>(100, _timestamp, true),
-            new Observation<int>(101, _timestamp, 1996),
-            new Observation<double>(102, _timestamp, 1.111),
-            new Observation<string>(103, _timestamp, "hello world"),
+            new Observation<bool>(100, _timestamp, DateTime.UnixEpoch, true),
+            new Observation<int>(101, _timestamp, DateTime.UnixEpoch, 1996),
+            new Observation<double>(102, _timestamp, DateTime.UnixEpoch, 1.111),
+            new Observation<string>(103, _timestamp, DateTime.UnixEpoch, "hello world"),
         }));
 
         string expected = "AYAABBBkCNoY8rmFAAAAAQFQZQjaGPK5hQAAAAEHzCBmCNoY8rmFAAAAAT/xxqfvnbItwGcI2hjyuYUAAAABAAtoZWxsbyB3b3JsZA==";

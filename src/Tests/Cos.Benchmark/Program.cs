@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using IoT.DataTypes.Observations;
+using Easee.IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
 
