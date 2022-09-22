@@ -39,7 +39,7 @@ public class CircularTests
     {
         List<Observation> input = new()
         {
-            new Observation<Position>(104, DateTime.UtcNow, DateTime.UnixEpoch, new Position(1, 2)),
+            new Observation<Position>(104, DateTime.UtcNow, new Position(1, 2)),
         };
 
         List<Observation> output = _reader.Deserialize(_writer.Serialize(input));
@@ -52,7 +52,7 @@ public class CircularTests
     {
         List<Observation> input = new()
         {
-            new Observation<int>(104, DateTime.UtcNow, DateTime.UnixEpoch, -1),
+            new Observation<int>(104, DateTime.UtcNow, -1),
         };
 
         List<Observation> output = _reader.Deserialize(_writer.Serialize(input));
@@ -65,7 +65,7 @@ public class CircularTests
     {
         List<Observation> input = new()
         {
-            new Observation<Position>(104, DateTime.UtcNow, DateTime.UnixEpoch, new Position(1, 2, 3)),
+            new Observation<Position>(104, DateTime.UtcNow, new Position(1, 2, 3)),
         };
 
         List<Observation> output = _reader.Deserialize(_writer.Serialize(input));
@@ -78,11 +78,11 @@ public class CircularTests
     {
         List<Observation> input = new()
         {
-            new Observation<bool>(100, DateTime.UtcNow, DateTime.UnixEpoch, true),
-            new Observation<int>(101, DateTime.UtcNow, DateTime.UnixEpoch, 1996),
-            new Observation<double>(102, DateTime.UtcNow, DateTime.UnixEpoch, 1.111),
-            new Observation<string>(103, DateTime.UtcNow, DateTime.UnixEpoch, "hello world"),
-            new Observation<Position>(104, DateTime.UtcNow, DateTime.UnixEpoch, new Position(1, 2)),
+            new Observation<bool>(100, DateTime.UtcNow, true),
+            new Observation<int>(101, DateTime.UtcNow, 1996),
+            new Observation<double>(102, DateTime.UtcNow, 1.111),
+            new Observation<string>(103, DateTime.UtcNow, "hello world"),
+            new Observation<Position>(104, DateTime.UtcNow, new Position(1, 2)),
         };
 
         List<Observation> output = _reader.Deserialize(_writer.Serialize(input));
