@@ -1,4 +1,5 @@
 ﻿using Easee.Cos.Exceptions;
+using Easee.IoT.DataTypes;
 using Easee.IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
