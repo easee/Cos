@@ -3,9 +3,12 @@ using BenchmarkDotNet.Running;
 using Easee.IoT.DataTypes.Observations;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 namespace Easee.Cos.Benchmark
 {
+    [SimpleJob(RuntimeMoniker.Net60, baseline: true)]
+    [SimpleJob(RuntimeMoniker.Net70)]
     [MemoryDiagnoser]
     public class CosDeserialize
     {

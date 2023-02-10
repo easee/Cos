@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace Easee.Cos
 {
@@ -7,6 +8,11 @@ namespace Easee.Cos
     {
         public BigEndianBinaryReader(Stream stream)
             : base(stream)
+        {
+        }
+
+        public BigEndianBinaryReader(Stream stream, Encoding encoding, bool leaveOpen)
+            : base(stream, encoding, leaveOpen)
         {
         }
 

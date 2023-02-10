@@ -18,8 +18,13 @@ namespace Easee.Cos
     {
         public List<Observation> Deserialize(in byte[] cosData)
         {
-            using MemoryStream stream = new(cosData);
-            using BigEndianBinaryReader reader = new(stream);
+            using var stream = new MemoryStream(cosData);
+            return Deserialize(stream);
+        }
+
+        public List<Observation> Deserialize(Stream stream)
+        {
+            using BigEndianBinaryReader reader = new(stream, Encoding.UTF8, true);
 
             byte cosVersion = reader.ReadByte();
             if (cosVersion == 1)
